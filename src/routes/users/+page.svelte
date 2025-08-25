@@ -3,18 +3,13 @@
 </script>
 
 <svelte:head>
-	<title>Registered Users</title>
-	<meta name="description" content="A list of all registered users from Auth and Firestore." />
+	<title>Usuarios</title>
 </svelte:head>
 
 <div class="p-4 sm:p-6 lg:p-8">
 	<div class="sm:flex sm:items-center">
 		<div class="sm:flex-auto">
-			<h1 class="text-xl font-semibold text-gray-900">Registered Users</h1>
-			<p class="mt-2 text-sm text-gray-700">
-				A list of all users from Firebase Authentication combined with their data from the Firestore
-				'users' collection.
-			</p>
+			<h1 class="text-xl font-semibold text-gray-900">Usuarios Registrados</h1>
 		</div>
 	</div>
 	<div class="mt-8 flex flex-col">
@@ -59,7 +54,7 @@
 								{#each data.users as user (user.uid)}
 									<tr>
 										<td class="py-4 pr-3 pl-4 text-sm whitespace-nowrap sm:pl-6">
-											<div class="flex items-center">
+											<div class="flex gap-3 items-center">
 												<div class="h-10 w-10 flex-shrink-0">
 													<img
 														class="h-10 w-10 rounded-full"
@@ -67,17 +62,14 @@
 														alt="User avatar"
 													/>
 												</div>
-												<div class="ml-4">
-													<div class="font-medium text-gray-900">
-														{user.nombre || 'N/A'}
-													</div>
-													<div class="text-gray-500">{user.displayName || 'N/A'}</div>
+												<div class="font-medium text-gray-900">
+													{user.nombre || 'N/A'}
 												</div>
 											</div>
 										</td>
 										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
 											<div class="text-gray-900">{user.email}</div>
-											<div class="text-gray-500">{user.celuar || 'N/A'}</div>
+											<div class="text-gray-500">{user.celuar}</div>
 										</td>
 										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
 											>{user.rol || 'N/A'}</td

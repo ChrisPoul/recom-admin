@@ -1,7 +1,6 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, Timestamp, DocumentReference } from 'firebase-admin/firestore';
-import type { PageServerLoad } from './$types';
 
 // These would be your service account credentials
 const serviceAccount = {
@@ -48,31 +47,19 @@ function makeSerializable(data: any): any {
     return data;
 }
 
-export const load: PageServerLoad = async () => {
+export async function load() {
     try {
-        // Get all users from Firebase Auth
-        const authUsers = await getAuth().listUsers();
 
         // Get all user documents from Firestore
         const firestoreUsersSnap = await db.collection('users').get();
-        const firestoreUsers = new Map();
+        const firestoreUsers: User[] = [];
         firestoreUsersSnap.forEach(doc => {
-            firestoreUsers.set(doc.id, makeSerializable(doc.data()));
+            firestoreUsers.push(makeSerializable(doc.data()));
         });
 
-        // Merge Auth and Firestore data
-        const mergedUsers = authUsers.users.map(authUser => {
-            const firestoreData = firestoreUsers.get(authUser.uid) || {};
-            return {
-                // Auth data
-                ...authUser.toJSON(),
-                // Firestore data
-                ...firestoreData
-            };
-        });
 
         return {
-            users: mergedUsers
+            users: firestoreUsers
         };
 
     } catch (error) {

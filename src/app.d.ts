@@ -8,6 +8,16 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+	interface User {
+		uid: string;
+		email: string;
+		nombre: string;
+		photoURL: string;
+		rol: string;
+		celular: string;
+		empresa: string;
+		disabled: boolean;
+	}
 }
 
 export {};
