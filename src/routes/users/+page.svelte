@@ -12,7 +12,8 @@
 		<div class="sm:flex-auto">
 			<h1 class="text-xl font-semibold text-gray-900">Registered Users</h1>
 			<p class="mt-2 text-sm text-gray-700">
-				A list of all users from Firebase Authentication combined with their data from the Firestore 'users' collection.
+				A list of all users from Firebase Authentication combined with their data from the Firestore
+				'users' collection.
 			</p>
 		</div>
 	</div>
@@ -38,16 +39,19 @@
 									<th
 										scope="col"
 										class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-										>User</th
+										>Nombre</th
+									>
+									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+										>Contacto</th
+									>
+									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+										>Rol</th
+									>
+									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+										>Empresa</th
 									>
 									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
 										>Status</th
-									>
-									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-										>Firestore Data</th
-									>
-									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-										>Created On</th
 									>
 								</tr>
 							</thead>
@@ -64,11 +68,23 @@
 													/>
 												</div>
 												<div class="ml-4">
-													<div class="font-medium text-gray-900">{user.displayName || 'N/A'}</div>
-													<div class="text-gray-500">{user.email}</div>
+													<div class="font-medium text-gray-900">
+														{user.nombre || 'N/A'}
+													</div>
+													<div class="text-gray-500">{user.displayName || 'N/A'}</div>
 												</div>
 											</div>
 										</td>
+										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+											<div class="text-gray-900">{user.email}</div>
+											<div class="text-gray-500">{user.celuar || 'N/A'}</div>
+										</td>
+										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
+											>{user.rol || 'N/A'}</td
+										>
+										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
+											>{user.empresa || 'N/A'}</td
+										>
 										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
 											{#if user.disabled}
 												<span
@@ -82,12 +98,6 @@
 												>
 											{/if}
 										</td>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
-											<pre class="text-xs">{JSON.stringify(user.firestoreData, null, 2)}</pre>
-										</td>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
-											>{new Date(user.metadata.creationTime).toLocaleDateString()}</td
-										>
 									</tr>
 								{/each}
 							</tbody>

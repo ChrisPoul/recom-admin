@@ -67,7 +67,7 @@ export const load: PageServerLoad = async () => {
                 // Auth data
                 ...authUser.toJSON(),
                 // Firestore data
-                firestoreData
+                ...firestoreData
             };
         });
 
