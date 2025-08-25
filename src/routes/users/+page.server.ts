@@ -1,6 +1,7 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, Timestamp, DocumentReference } from 'firebase-admin/firestore';
+import { fail } from '@sveltejs/kit';
 
 // These would be your service account credentials
 const serviceAccount = {
@@ -70,3 +71,44 @@ export async function load() {
         };
     }
 };
+
+export const actions = {
+    register: async ({ request }) => {
+        const data = await request.formData();
+        const email = data.get('email') as string;
+        const password = data.get('password') as string;
+        const nombre = data.get('nombre') as string;
+        const rol = data.get('rol') as string;
+        const empresa = data.get('empresa') as string;
+        const celuar = data.get('celuar') as string;
+
+        if (!email || !password || !nombre) {
+            return fail(400, { error: 'Email, contraseña y nombre son requeridos.' });
+        }
+
+        try {
+            // Create user in Firebase Auth
+            const userRecord = await getAuth().createUser({
+                email,
+                password,
+                displayName: nombre
+            });
+
+            // Create user document in Firestore
+            await db.collection('users').doc(userRecord.uid).set({
+                nombre,
+                rol,
+                empresa,
+                celuar,
+                created_time: Timestamp.now()
+            });
+
+            return { success: true, message: 'Usuario creado con éxito' };
+
+        } catch (error: any) {
+            console.error("Error creating user:", error);
+            return fail(500, { error: error.message });
+        }
+    }
+};
+
