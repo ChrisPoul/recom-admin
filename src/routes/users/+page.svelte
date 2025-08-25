@@ -4,7 +4,7 @@
 
 <svelte:head>
 	<title>Registered Users</title>
-	<meta name="description" content="A list of all registered users." />
+	<meta name="description" content="A list of all registered users from Auth and Firestore." />
 </svelte:head>
 
 <div class="p-4 sm:p-6 lg:p-8">
@@ -12,7 +12,7 @@
 		<div class="sm:flex-auto">
 			<h1 class="text-xl font-semibold text-gray-900">Registered Users</h1>
 			<p class="mt-2 text-sm text-gray-700">
-				A list of all the users in your project including their email, UID, and status.
+				A list of all users from Firebase Authentication combined with their data from the Firestore 'users' collection.
 			</p>
 		</div>
 	</div>
@@ -41,10 +41,10 @@
 										>User</th
 									>
 									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-										>UID</th
+										>Status</th
 									>
 									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-										>Status</th
+										>Firestore Data</th
 									>
 									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
 										>Created On</th
@@ -69,7 +69,6 @@
 												</div>
 											</div>
 										</td>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{user.uid}</td>
 										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
 											{#if user.disabled}
 												<span
@@ -83,8 +82,11 @@
 												>
 											{/if}
 										</td>
+										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+											<pre class="text-xs">{JSON.stringify(user.firestoreData, null, 2)}</pre>
+										</td>
 										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
-											>{new Date(user.creationTime).toLocaleDateString()}</td
+											>{new Date(user.metadata.creationTime).toLocaleDateString()}</td
 										>
 									</tr>
 								{/each}
