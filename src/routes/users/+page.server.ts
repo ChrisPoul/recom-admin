@@ -143,7 +143,29 @@ export const actions = {
         } catch (error: any) {
             return fail(500, { error: error.message });
         }
+    },
+
+    delete: async ({ request }) => {
+        const data = await request.formData();
+        const uid = data.get('uid') as string;
+
+        if (!uid) {
+            return fail(400, { error: 'UID is required for deletion.' });
+        }
+
+        try {
+            // Delete from Auth
+            await getAuth().deleteUser(uid);
+            // Delete from Firestore
+            await db.collection('users').doc(uid).delete();
+
+            return { success: true, message: 'Usuario eliminado con éxito' };
+
+        } catch (error: any) {
+            return fail(500, { error: error.message });
+        }
     }
 };
+
 
 

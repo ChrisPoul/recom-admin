@@ -108,17 +108,23 @@
 			</div>
 		</div>
 
-		<div class="mt-8 flex justify-end">
-			<button>Eliminar</button>
-			<button
-				type="button"
-				onclick={() => (isModalOpen = false)}
-				class="mr-2 rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
-				>Cancelar</button
-			>
-			<button type="submit" class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-				>{isEditing ? 'Actualizar Usuario' : 'Registrar Usuario'}</button
-			>
+		<div class="mt-8 flex items-center justify-between">
+				{#if isEditing}
+					<button type="submit" class="text-sm font-medium text-red-600 hover:text-red-800" formaction="?/delete" onclick={() => confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.')}>
+						Eliminar Usuario
+					</button>
+				{/if}
+			<div>
+				<button
+					type="button"
+					onclick={() => (isModalOpen = false)}
+					class="mr-2 rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+					>Cancelar</button
+				>
+				<button type="submit" class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+					>{isEditing ? 'Actualizar Usuario' : 'Registrar Usuario'}</button
+				>
+			</div>
 		</div>
 	</form>
 </Modal>
