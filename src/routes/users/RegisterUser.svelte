@@ -5,22 +5,22 @@
 
 	let { form } = $props();
 
-	let isRegisterModalOpen = $state(false);
+	let isModalOpen = $state(true);
 </script>
 
-{#snippet registerForm()}
+<Modal bind:isModalOpen>
 	<form
 		method="POST"
 		action="?/register"
 		use:enhance={() => {
 			return async ({ result }) => {
 				if (result.type === 'success') {
-					isRegisterModalOpen = false;
+					isModalOpen = false;
 				}
 				await invalidateAll();
 			};
 		}}
-		class="w-full max-w-md rounded-lg bg-white p-8 shadow-xl"
+		class="w-full min-w-xl rounded-lg bg-white p-8 shadow-xl"
 	>
 		<h2 class="mb-6 text-2xl font-bold">Registrar Nuevo Usuario</h2>
 
@@ -41,7 +41,7 @@
 					type="text"
 					name="nombre"
 					id="nombre"
-					class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+					class="mt-1 form-input"
 					required
 				/>
 			</div>
@@ -51,7 +51,7 @@
 					type="email"
 					name="email"
 					id="email"
-					class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+					class="mt-1 form-input"
 					required
 				/>
 			</div>
@@ -61,7 +61,7 @@
 					type="password"
 					name="password"
 					id="password"
-					class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+					class="mt-1 form-input"
 					required
 				/>
 			</div>
@@ -71,7 +71,7 @@
 					type="tel"
 					name="celuar"
 					id="celuar"
-					class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+					class="mt-1 form-input"
 				/>
 			</div>
 			<div>
@@ -80,7 +80,7 @@
 					type="text"
 					name="empresa"
 					id="empresa"
-					class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+					class="mt-1 form-input"
 				/>
 			</div>
 			<div>
@@ -88,7 +88,7 @@
 				<select
 					name="rol"
 					id="rol"
-					class="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+					class="mt-1 form-input"
 				>
 					<option value="residencial">Residencial</option>
 					<option value="comercial">Comercial</option>
@@ -100,7 +100,7 @@
 		<div class="mt-8 flex justify-end">
 			<button
 				type="button"
-				onclick={() => (isRegisterModalOpen = false)}
+				onclick={() => (isModalOpen = false)}
 				class="mr-2 rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
 				>Cancelar</button
 			>
@@ -109,15 +109,13 @@
 			>
 		</div>
 	</form>
-{/snippet}
+</Modal>
 
 <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
 	<button
-		onclick={() => (isRegisterModalOpen = true)}
+		onclick={() => (isModalOpen = true)}
 		type="button"
 		class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none sm:w-auto"
 		>Registrar Usuario</button
 	>
 </div>
-
-<Modal bind:isModalOpen={isRegisterModalOpen} children={registerForm} />

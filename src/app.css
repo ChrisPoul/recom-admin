@@ -1,2 +1,13 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
+
+.form-input {
+	@apply block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none;
+}
+
+.table-cell {
+  @apply px-3 py-4 text-sm whitespace-nowrap text-gray-500;
+}
+.table-header {
+  @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
+}

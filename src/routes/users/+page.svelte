@@ -36,19 +36,19 @@
 								<tr>
 									<th
 										scope="col"
-										class="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+										class="table-header sm:pl-6"
 										>Nombre</th
 									>
-									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+									<th scope="col" class="table-header"
 										>Contacto</th
 									>
-									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+									<th scope="col" class="table-header"
 										>Rol</th
 									>
-									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+									<th scope="col" class="table-header"
 										>Empresa</th
 									>
-									<th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+									<th scope="col" class="table-header"
 										>Status</th
 									>
 								</tr>
@@ -56,7 +56,7 @@
 							<tbody class="divide-y divide-gray-200 bg-white">
 								{#each data.users as user ( user.uid )}
 									<tr>
-										<td class="py-4 pr-3 pl-4 text-sm whitespace-nowrap sm:pl-6">
+										<td class="table-cell sm:pl-6">
 											<div class="flex items-center gap-3">
 												<div class="h-10 w-10 flex-shrink-0">
 													<img
@@ -70,17 +70,17 @@
 												</div>
 											</div>
 										</td>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+										<td class="table-cell">
 											<div class="text-gray-900">{user.email}</div>
-											<div class="text-gray-500">{user.celuar}</div>
+											<div>{user.celuar}</div>
 										</td>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
+										<td class="table-cell"
 											>{user.rol || 'N/A'}</td
 										>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500"
+										<td class="table-cell"
 											>{user.empresa || 'N/A'}</td
 										>
-										<td class="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+										<td class="table-cell">
 											{#if user.disabled}
 												<span
 													class="inline-flex rounded-full bg-red-100 px-2 text-xs leading-5 font-semibold text-red-800"
