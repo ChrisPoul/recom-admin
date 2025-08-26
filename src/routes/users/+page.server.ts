@@ -55,7 +55,7 @@ export async function load() {
         const firestoreUsersSnap = await db.collection('users').orderBy('created_time', 'desc').get();
         const firestoreUsers: User[] = [];
         firestoreUsersSnap.forEach(doc => {
-            firestoreUsers.push(makeSerializable(doc.data()));
+            firestoreUsers.push(makeSerializable({ uid: doc.id, ...doc.data() }));
         });
 
 
@@ -96,6 +96,7 @@ export const actions = {
 
             // Create user document in Firestore
             await db.collection('users').doc(userRecord.uid).set({
+                uid: userRecord.uid,
                 nombre,
                 rol,
                 empresa,
@@ -111,4 +112,5 @@ export const actions = {
         }
     }
 };
+
 
