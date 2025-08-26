@@ -51,8 +51,8 @@ function makeSerializable(data: any): any {
 export async function load() {
     try {
 
-        // Get all user documents from Firestore
-        const firestoreUsersSnap = await db.collection('users').get();
+        // Get all user documents from Firestore, sorted by creation date
+        const firestoreUsersSnap = await db.collection('users').orderBy('created_time', 'desc').get();
         const firestoreUsers: User[] = [];
         firestoreUsersSnap.forEach(doc => {
             firestoreUsers.push(makeSerializable(doc.data()));
