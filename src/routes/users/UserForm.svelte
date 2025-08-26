@@ -4,7 +4,7 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import type { ActionData } from './$types';
 
-	let { form, user = null }: { form: ActionData; user?: any | null } = $props();
+	let { form, user = null }: { form: ActionData; user?: User | null } = $props();
 
 	let isModalOpen = $state(false);
 	let isEditing = $derived(!!user);

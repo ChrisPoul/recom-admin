@@ -98,6 +98,7 @@ export const actions = {
             await db.collection('users').doc(userRecord.uid).set({
                 uid: userRecord.uid,
                 nombre,
+                email,
                 rol,
                 empresa,
                 celuar,
