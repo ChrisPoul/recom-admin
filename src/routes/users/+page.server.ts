@@ -110,6 +110,39 @@ export const actions = {
             console.error("Error creating user:", error);
             return fail(500, { error: error.message });
         }
+    },
+
+    edit: async ({ request }) => {
+        const data = await request.formData();
+        const uid = data.get('uid') as string;
+        const nombre = data.get('nombre') as string;
+        const rol = data.get('rol') as string;
+        const empresa = data.get('empresa') as string;
+        const celuar = data.get('celuar') as string;
+
+        if (!uid) {
+            return fail(400, { error: 'UID is required for an update.' });
+        }
+
+        try {
+            // Update Auth
+            await getAuth().updateUser(uid, {
+                displayName: nombre
+            });
+
+            // Update Firestore
+            await db.collection('users').doc(uid).update({
+                nombre,
+                rol,
+                empresa,
+                celuar
+            });
+
+            return { success: true, message: 'Usuario actualizado con éxito' };
+
+        } catch (error: any) {
+            return fail(500, { error: error.message });
+        }
     }
 };
 

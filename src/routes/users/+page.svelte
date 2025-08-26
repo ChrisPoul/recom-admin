@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RegisterUser from './RegisterUser.svelte';
+	import UserForm from './UserForm.svelte';
 
 	let { data, form } = $props();
 </script>
@@ -13,7 +13,7 @@
 		<div class="sm:flex-auto">
 			<h1 class="text-xl font-semibold text-gray-900">Usuarios Registrados</h1>
 		</div>
-		<RegisterUser {form} />
+		<UserForm {form} />
 	</div>
 	<div class="mt-8 flex flex-col">
 		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
