@@ -34,27 +34,15 @@
 						<table class="min-w-full divide-y divide-gray-300">
 							<thead class="bg-gray-50">
 								<tr>
-									<th
-										scope="col"
-										class="table-header sm:pl-6"
-										>Nombre</th
-									>
-									<th scope="col" class="table-header"
-										>Contacto</th
-									>
-									<th scope="col" class="table-header"
-										>Rol</th
-									>
-									<th scope="col" class="table-header"
-										>Empresa</th
-									>
-									<th scope="col" class="table-header"
-										>Status</th
-									>
+									<th scope="col" class="table-header sm:pl-6">Nombre</th>
+									<th scope="col" class="table-header">Contacto</th>
+									<th scope="col" class="table-header">Rol</th>
+									<th scope="col" class="table-header">Empresa</th>
+									<th scope="col" class="table-header">Status</th>
 								</tr>
 							</thead>
 							<tbody class="divide-y divide-gray-200 bg-white">
-								{#each data.users as user ( user.uid )}
+								{#each data.users as user (user.uid)}
 									<tr>
 										<td class="table-cell sm:pl-6">
 											<div class="flex items-center gap-3">
@@ -66,20 +54,17 @@
 													/>
 												</div>
 												<div class="font-medium text-gray-900">
-													{user.nombre || 'N/A'}
+													{user.nombre}
 												</div>
+												<UserForm {user} {form} />
 											</div>
 										</td>
 										<td class="table-cell">
 											<div class="text-gray-900">{user.email}</div>
 											<div>{user.celuar}</div>
 										</td>
-										<td class="table-cell"
-											>{user.rol || 'N/A'}</td
-										>
-										<td class="table-cell"
-											>{user.empresa || 'N/A'}</td
-										>
+										<td class="table-cell">{user.rol || 'N/A'}</td>
+										<td class="table-cell">{user.empresa || 'N/A'}</td>
 										<td class="table-cell">
 											{#if user.disabled}
 												<span
