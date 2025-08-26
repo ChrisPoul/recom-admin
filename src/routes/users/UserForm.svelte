@@ -4,10 +4,16 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import type { ActionData } from './$types';
 
-	let { form, user = null }: { form: ActionData; user?: User | null } = $props();
+	let { form, user = null }: { form: ActionData; user?: any | null } = $props();
 
 	let isModalOpen = $state(false);
 	let isEditing = $derived(!!user);
+
+	function handleDelete(event: Event) {
+		if (!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.')) {
+			event.preventDefault();
+		}
+	}
 </script>
 
 <Modal bind:isModalOpen>
@@ -110,7 +116,7 @@
 
 		<div class="mt-8 flex items-center justify-between">
 				{#if isEditing}
-					<button type="submit" class="text-sm font-medium text-red-600 hover:text-red-800" formaction="?/delete" onclick={() => confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.')}>
+					<button type="submit" class="text-sm font-medium text-red-600 hover:text-red-800" formaction="?/delete" onclick={handleDelete}>
 						Eliminar Usuario
 					</button>
 				{/if}
