@@ -137,7 +137,7 @@
 
 		<div class="mt-8 flex items-center justify-between">
 				{#if isEditing}
-					<button type="submit" class="text-sm font-medium text-red-600 hover:text-red-800" formaction="?/delete" onclick={handleDelete}>
+					<button type="button" class="text-sm font-medium text-red-600 hover:text-red-800" formaction="?/delete" onclick={handleDelete}>
 						Eliminar Usuario
 					</button>
 				{/if}
