@@ -14,6 +14,26 @@
 			event.preventDefault();
 		}
 	}
+
+	function formatCelular(event: Event) {
+		const input = event.target as HTMLInputElement;
+		// 1. Limpiar todo lo que no sea un dígito y limitar a 10
+		const digits = input.value.replace(/\D/g, '').slice(0, 10);
+
+		// 2. Aplicar el formato (XXX) XXX XXXX
+		let formatted = '';
+		if (digits.length > 0) {
+			formatted = '(' + digits.substring(0, 3);
+		}
+		if (digits.length >= 4) {
+			formatted += ') ' + digits.substring(3, 6);
+		}
+		if (digits.length >= 7) {
+			formatted += ' ' + digits.substring(6, 10);
+		}
+
+		input.value = formatted;
+	}
 </script>
 
 <Modal bind:isModalOpen>
@@ -92,6 +112,7 @@
 					id="celuar"
 					value={user?.celuar || ''}
 					class="mt-1 form-input"
+					oninput={formatCelular}
 				/>
 			</div>
 			<div>
