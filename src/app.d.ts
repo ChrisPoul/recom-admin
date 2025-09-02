@@ -1,4 +1,7 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
+
+import type { DocumentReference } from "firebase-admin/firestore";
+
 // for information about these interfaces
 declare global {
 	namespace App {
@@ -21,6 +24,15 @@ declare global {
 		cp: string;
 		terminosycondiciones: boolean;
 		INE: string;
+	}
+	interface Cotizacion {
+		id: string;
+		cliente: DocumentReference;
+		proveedor: DocumentReference;
+		servicio: DocumentReference;
+		fecha: string;
+		monto: number;
+		estado: string;
 	}
 }
 
