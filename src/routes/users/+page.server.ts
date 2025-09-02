@@ -1,52 +1,6 @@
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore, Timestamp, DocumentReference } from 'firebase-admin/firestore';
+import { db, auth, makeSerializable } from '$lib/server/firebase';
+import { Timestamp } from 'firebase-admin/firestore';
 import { fail } from '@sveltejs/kit';
-
-// These would be your service account credentials
-const serviceAccount = {
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    clientEmail: import.meta.env.VITE_FIREBASE_CLIENT_EMAIL,
-    privateKey: import.meta.env.VITE_FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-}
-
-// Initialize Firebase Admin SDK
-if (!getApps().length) {
-    initializeApp({
-        credential: cert(serviceAccount)
-    });
-}
-
-const db = getFirestore();
-
-// Helper to recursively convert Firestore data types to serializable formats
-function makeSerializable(data: any): any {
-    if (data === null || data === undefined) {
-        return data;
-    }
-
-    if (data instanceof Timestamp) {
-        return data.toDate().toISOString();
-    }
-
-    if (data instanceof DocumentReference) {
-        return data.path;
-    }
-
-    if (Array.isArray(data)) {
-        return data.map(item => makeSerializable(item));
-    }
-
-    if (typeof data === 'object') {
-        const newObj: { [key: string]: any } = {};
-        for (const key in data) {
-            newObj[key] = makeSerializable(data[key]);
-        }
-        return newObj;
-    }
-
-    return data;
-}
 
 export async function load() {
     try {
@@ -88,7 +42,7 @@ export const actions = {
 
         try {
             // Create user in Firebase Auth
-            const userRecord = await getAuth().createUser({
+            const userRecord = await auth.createUser({
                 email,
                 password,
                 displayName: nombre
@@ -127,7 +81,7 @@ export const actions = {
 
         try {
             // Update Auth
-            await getAuth().updateUser(uid, {
+            await auth.updateUser(uid, {
                 displayName: nombre
             });
 
@@ -156,7 +110,7 @@ export const actions = {
 
         try {
             // Delete from Auth
-            await getAuth().deleteUser(uid);
+            await auth.deleteUser(uid);
             // Delete from Firestore
             await db.collection('users').doc(uid).delete();
 
@@ -167,6 +121,3 @@ export const actions = {
         }
     }
 };
-
-
-

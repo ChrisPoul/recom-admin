@@ -1,15 +1,9 @@
 <script lang="ts">
 	import UserForm from './UserForm.svelte';
 	import Table from '$lib/components/Table.svelte';
+	import { rolColors } from '$lib/constants';
 
 	let { data, form } = $props();
-
-	const rolColors: { [key: string]: string } = {
-		admin: 'bg-admin',
-		proveedor: 'bg-proveedor',
-		residencial: 'bg-residencial',
-		empresa: 'bg-empresa'
-	};
 </script>
 
 <svelte:head>
@@ -46,6 +40,7 @@
 				</tr>
 			{/snippet}
 			{#snippet row(user)}
+				<tr>
 					<td>
 						<div class="flex items-center gap-3">
 							<div class="h-10 w-10 flex-shrink-0">
@@ -55,9 +50,9 @@
 									alt="User avatar"
 								/>
 							</div>
-							<div class="font-medium text-gray-900">
+							<a href="/users/{user.uid}" class="font-medium text-gray-900 hover:text-indigo-600">
 								{user.nombre}
-							</div>
+							</a>
 							<UserForm {user} {form} />
 						</div>
 					</td>
@@ -86,22 +81,8 @@
 							{/if}
 						</span>
 					</td>
+				</tr>
 			{/snippet}
 		</Table>
 	{/if}
 </div>
-
-<style>
-	.bg-admin {
-		background-color: #ef4444; /* red-500 */
-	}
-	.bg-proveedor {
-		background-color: #f97316; /* orange-500 */
-	}
-	.bg-residencial {
-		background-color: #84cc16; /* lime-500 */
-	}
-	.bg-empresa {
-		background-color: #3b82f6; /* blue-500 */
-	}
-</style>

@@ -20,14 +20,16 @@
 			{#if data && data.length > 0}
 				<div class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black md:rounded-lg">
 					<table class="min-w-full divide-y divide-gray-300">
-						<thead class="bg-gray-50 [&_th]:px-3 [&_th]:py-3.5 [&_th]:text-left [&_th]:text-sm [&_th]:font-semibold [&_th]:text-gray-900 ">
+						<thead
+							class="bg-gray-50 text-left text-sm font-semibold text-gray-900 [&_th]:px-3.5 [&_th]:py-3.5"
+						>
 							{@render header()}
 						</thead>
-						<tbody class="divide-y divide-gray-200 bg-white [&_td]:whitespace-nowrap [&_td]:px-3 [&_td]:py-4 [&_td]:text-sm [&_td]:text-gray-500">
+						<tbody
+							class="divide-y divide-gray-200 bg-white text-sm whitespace-nowrap text-gray-500 [&_td]:px-3 [&_td]:py-4"
+						>
 							{#each data as item (item[key])}
-							<tr>
 								{@render row(item)}
-							</tr>
 							{/each}
 						</tbody>
 					</table>
@@ -38,5 +40,3 @@
 		</div>
 	</div>
 </div>
-
-
