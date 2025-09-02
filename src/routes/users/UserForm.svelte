@@ -10,7 +10,9 @@
 	let isEditing = $derived(!!user);
 
 	function handleDelete(event: Event) {
-		if (!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.')) {
+		if (
+			!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.')
+		) {
 			event.preventDefault();
 		}
 	}
@@ -128,19 +130,25 @@
 			<div>
 				<label for="rol" class="block text-sm font-medium text-gray-700">Rol</label>
 				<select name="rol" id="rol" class="mt-1 form-input" value={user?.rol || 'residencial'}>
-					<option value="residencial">Residencial</option>
-					<option value="comercial">Comercial</option>
 					<option value="admin">Admin</option>
+					<option value="proveedor">Proveedor</option>
+					<option value="residencial">Residencial</option>
+					<option value="empresa">empresa</option>
 				</select>
 			</div>
 		</div>
 
 		<div class="mt-8 flex items-center justify-between">
-				{#if isEditing}
-					<button type="button" class="text-sm font-medium text-red-600 hover:text-red-800" formaction="?/delete" onclick={handleDelete}>
-						Eliminar Usuario
-					</button>
-				{/if}
+			{#if isEditing}
+				<button
+					type="button"
+					class="text-sm font-medium text-red-600 hover:text-red-800"
+					formaction="?/delete"
+					onclick={handleDelete}
+				>
+					Eliminar Usuario
+				</button>
+			{/if}
 			<div>
 				<button
 					type="button"

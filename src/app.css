@@ -1,17 +1,24 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 
+@theme {
+	--color-proveedor: #59caf3;
+	--color-residencial: #096aa2;
+	--color-empresa: #fda116;
+	--color-admin: #ef4444;
+}
+
 .form-input {
 	@apply block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none;
 }
 
 .table-cell {
-  @apply px-3 py-4 text-sm whitespace-nowrap text-gray-500;
+	@apply px-3 py-4 text-sm whitespace-nowrap text-gray-500;
 }
 .table-header {
-  @apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
+	@apply px-3 py-3.5 text-left text-sm font-semibold text-gray-900;
 }
 
 button {
-  @apply cursor-pointer
+	@apply cursor-pointer;
 }

@@ -2,6 +2,13 @@
 	import UserForm from './UserForm.svelte';
 
 	let { data, form } = $props();
+
+	const rolColors: { [key: string]: string } = {
+		admin: 'bg-admin',
+		proveedor: 'bg-proveedor',
+		residencial: 'bg-residencial',
+		empresa: 'bg-empresa'
+	};
 </script>
 
 <svelte:head>
@@ -63,20 +70,26 @@
 											<div class="text-gray-900">{user.email}</div>
 											<div>{user.celuar}</div>
 										</td>
-										<td class="table-cell">{user.rol || 'N/A'}</td>
+										<td class="table-cell">
+											<span
+												class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-white ${rolColors[user.rol] || 'bg-gray-100'}`}
+											>
+												{user.rol || 'N/A'}
+											</span>
+										</td>
 										<td class="table-cell">{user.empresa || 'N/A'}</td>
 										<td class="table-cell">
-											{#if user.disabled}
-												<span
-													class="inline-flex rounded-full bg-red-100 px-2 text-xs leading-5 font-semibold text-red-800"
-													>Disabled</span
-												>
-											{:else}
-												<span
-													class="inline-flex rounded-full bg-green-100 px-2 text-xs leading-5 font-semibold text-green-800"
-													>Active</span
-												>
-											{/if}
+											<span
+												class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {user.disabled
+													? 'bg-red-100 text-red-800'
+													: 'bg-green-100 text-green-800'}"
+											>
+												{#if user.disabled}
+													Disabled
+												{:else}
+													Active
+												{/if}
+											</span>
 										</td>
 									</tr>
 								{/each}
