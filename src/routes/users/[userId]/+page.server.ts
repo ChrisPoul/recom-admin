@@ -10,7 +10,7 @@ export async function load({ params }) {
             throw error(404, 'User not found');
         }
 
-        const user = makeSerializable({ uid: userDoc.id, ...userDoc.data() });
+        const user: User = makeSerializable({ uid: userDoc.id, ...userDoc.data() });
 
         return {
             user

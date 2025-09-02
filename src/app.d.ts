@@ -17,6 +17,10 @@ declare global {
 		celular: string;
 		empresa: string;
 		disabled: boolean;
+		created_time: string;
+		cp: string;
+		terminosycondiciones: boolean;
+		INE: string;
 	}
 }
 
