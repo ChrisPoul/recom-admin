@@ -35,6 +35,9 @@ export const actions = {
         const rol = data.get('rol') as string;
         const empresa = data.get('empresa') as string;
         const celuar = data.get('celuar') as string;
+        const cp = data.get('cp') as string;
+        const terminosycondiciones = !!data.get('terminosycondiciones');
+        const INE = data.get('INE') as string;
 
         if (!email || !password || !nombre) {
             return fail(400, { error: 'Email, contraseña y nombre son requeridos.' });
@@ -56,6 +59,9 @@ export const actions = {
                 rol,
                 empresa,
                 celuar,
+                cp,
+                terminosycondiciones,
+                INE,
                 created_time: Timestamp.now()
             });
 
@@ -74,6 +80,9 @@ export const actions = {
         const rol = data.get('rol') as string;
         const empresa = data.get('empresa') as string;
         const celuar = data.get('celuar') as string;
+        const cp = data.get('cp') as string;
+        const terminosycondiciones = !!data.get('terminosycondiciones');
+        const INE = data.get('INE') as string;
 
         if (!uid) {
             return fail(400, { error: 'UID is required for an update.' });
@@ -85,13 +94,23 @@ export const actions = {
                 displayName: nombre
             });
 
-            // Update Firestore
-            await db.collection('users').doc(uid).update({
+            // Build update object for Firestore
+            const updateData: { [key: string]: any } = {
                 nombre,
                 rol,
                 empresa,
-                celuar
-            });
+                celuar,
+                cp,
+                terminosycondiciones
+            };
+
+            // Only update INE if a new URL was provided
+            if (INE) {
+                updateData.INE = INE;
+            }
+
+            // Update Firestore
+            await db.collection('users').doc(uid).update(updateData);
 
             return { success: true, message: 'Usuario actualizado con éxito' };
 

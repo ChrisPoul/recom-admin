@@ -93,5 +93,16 @@
 				</div>
 			</dl>
 		</div>
+
+		{#if user.rol === 'proveedor' && data.services && data.services.length > 0}
+			<div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+				<h3 class="text-lg leading-6 font-medium text-gray-900">Servicios Ofrecidos</h3>
+				<ul role="list" class="mt-4 list-inside list-disc space-y-1 text-sm text-gray-600">
+					{#each data.services as service}
+						<li>{service.name}</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
 	</div>
 </div>

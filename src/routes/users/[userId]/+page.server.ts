@@ -1,4 +1,5 @@
 import { db, makeSerializable } from '$lib/server/firebase';
+import { DocumentReference } from 'firebase-admin/firestore';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params }) {
@@ -10,19 +11,37 @@ export async function load({ params }) {
             throw error(404, 'User not found');
         }
 
-        const user: User = makeSerializable({ uid: userDoc.id, ...userDoc.data() });
+        const userData = userDoc.data();
+        let services: { id: string, name: string }[] = [];
+        if (!userData) return
+
+        if (userData.rol === 'proveedor' && Array.isArray(userData.servicios_ofrecidos) && userData.servicios_ofrecidos.length > 0) {
+            // Filter to ensure we only process actual DocumentReference objects
+            const serviceReferences = userData.servicios_ofrecidos.filter(ref => ref instanceof DocumentReference) as DocumentReference[];
+            
+            if (serviceReferences.length > 0) {
+                const serviceDocs = await db.getAll(...serviceReferences);
+                services = serviceDocs
+                    .filter(doc => doc.exists)
+                    .map(doc => {
+                        const docData = doc.data();
+                        return { id: doc.id, name: docData?.name || 'Unnamed Service' };
+                    });
+            }
+        }
+
+        const user = makeSerializable({ uid: userDoc.id, ...userData });
 
         return {
-            user
+            user,
+            services
         };
 
     } catch (err: any) {
         console.error("Error loading user:", err);
-        // Re-throw SvelteKit errors
         if (err.status) {
             throw err;
         }
-        // Throw a generic error for other cases
         throw error(500, 'Failed to load user data.');
     }
 }
