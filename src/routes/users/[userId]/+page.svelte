@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { rolColors } from '$lib/constants.js';
 
 	let { data } = $props();
 	const { user } = data;

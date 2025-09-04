@@ -26,7 +26,7 @@
 			</div>
 		</div>
 	{:else}
-		<Table data={data.cotizaciones} key="id">
+		<Table data={data.cotizaciones} color="residencial" key="id">
 			{#snippet header()}
 				<tr>
 					<th scope="col">Nombre</th>

@@ -5,23 +5,27 @@
 		data,
 		key,
 		header,
-		row
+		row,
+		color // Default to a theme color name
 	}: {
 		data: Item[];
 		key: keyof Item;
 		header: Snippet;
 		row: Snippet<[Item]>;
+		color: string;
 	} = $props();
 </script>
 
 <div class="mt-8 flex flex-col">
 	<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-		<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+		<div class="inline-block min-w-full py-2 align-middle px-8">
 			{#if data && data.length > 0}
-				<div class="ring-opacity-5 overflow-hidden shadow ring-1 ring-black md:rounded-lg">
+				<div class="ring-opacity-5 overflow-hidden shadow ring-3 rounded-3xl" style={`--tw-ring-color: var(--color-${color})`}>
+					<div class="flex w-full h-6" style={`background-color: var(--color-${color})`}></div>
 					<table class="min-w-full divide-y divide-gray-300">
 						<thead
-							class="bg-gray-50 text-left text-sm font-semibold text-gray-900 [&_th]:px-3.5 [&_th]:py-3.5"
+							class="bg-gray-50 text-left text-sm [&_th]:font-medium [&_th]:px-3.5 [&_th]:py-3.5"
+                            style={`color: var(--color-${color})`}
 						>
 							{@render header()}
 						</thead>

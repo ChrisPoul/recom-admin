@@ -1,7 +1,7 @@
 <script lang="ts">
 	import UserForm from './UserForm.svelte';
 	import Table from '$lib/components/Table.svelte';
-	import { rolColors } from '$lib/constants';
+	import { page } from '$app/state';
 
 	let { data, form } = $props();
 </script>
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 	{:else}
-		<Table data={data.users} key="uid">
+		<Table data={data.users} color={page.url.searchParams.get('rol') || 'admin'} key="uid">
 			{#snippet header()}
 				<tr>
 					<th scope="col">Nombre</th>
@@ -62,7 +62,7 @@
 					</td>
 					<td>
 						<span
-							class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-white ${rolColors[user.rol] || 'bg-gray-100'}`}
+							class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-white bg-${user.rol || 'gray-400'}`}
 						>
 							{user.rol || 'N/A'}
 						</span>

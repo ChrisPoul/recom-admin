@@ -6,7 +6,7 @@
 	let { children } = $props();
 
 	const navLinks = [
-		{ href: '/dashboard', label: 'Dashboard', icon: 'dashboard.svg' },
+		{ href: '/', label: 'Dashboard', icon: 'dashboard.svg' },
 		{ href: '/cotizaciones', label: 'Cotizaciones', icon: 'cotizaciones.svg' },
 		{
 			label: 'Usuarios',
