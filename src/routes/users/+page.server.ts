@@ -2,11 +2,17 @@ import { db, auth, makeSerializable } from '$lib/server/firebase';
 import { Timestamp } from 'firebase-admin/firestore';
 import { fail } from '@sveltejs/kit';
 
-export async function load() {
+export async function load({ url }) {
     try {
+        const rolFilter = url.searchParams.get('rol');
 
-        // Get all user documents from Firestore, sorted by creation date
-        const firestoreUsersSnap = await db.collection('users').orderBy('created_time', 'desc').get();
+        let usersQuery = db.collection('users').orderBy('created_time', 'desc');
+
+        if (rolFilter) {
+            usersQuery = usersQuery.where('rol', '==', rolFilter);
+        }
+
+        const firestoreUsersSnap = await usersQuery.get();
         const firestoreUsers: User[] = [];
         firestoreUsersSnap.forEach(doc => {
             firestoreUsers.push(makeSerializable({ uid: doc.id, ...doc.data() }));
