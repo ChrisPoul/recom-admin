@@ -1,12 +1,13 @@
 <script lang="ts" generics="Item">
 	import type { Snippet } from 'svelte';
+	import Card from './Card.svelte';
 
 	let {
 		data,
 		key,
 		header,
 		row,
-		color // Default to a theme color name
+		color
 	}: {
 		data: Item[];
 		key: keyof Item;
@@ -20,8 +21,7 @@
 	<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 		<div class="inline-block min-w-full py-2 align-middle px-8">
 			{#if data && data.length > 0}
-				<div class="ring-opacity-5 overflow-hidden shadow ring-3 rounded-3xl" style={`--tw-ring-color: var(--color-${color})`}>
-					<div class="flex w-full h-6" style={`background-color: var(--color-${color})`}></div>
+				<Card {color}>
 					<table class="min-w-full divide-y divide-gray-300">
 						<thead
 							class="bg-gray-50 text-left text-sm [&_th]:font-medium [&_th]:px-3.5 [&_th]:py-3.5"
@@ -37,7 +37,7 @@
 							{/each}
 						</tbody>
 					</table>
-				</div>
+				</Card>
 			{:else}
 				<p class="py-4 text-center text-gray-500">No items found.</p>
 			{/if}
