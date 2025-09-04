@@ -62,7 +62,8 @@
 					</td>
 					<td>
 						<span
-							class={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-white bg-${user.rol || 'gray-400'}`}
+							class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-white"
+							style={`background-color: var(--color-${user.rol || 'admin'})`}
 						>
 							{user.rol || 'N/A'}
 						</span>

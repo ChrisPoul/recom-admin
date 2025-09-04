@@ -3,10 +3,12 @@
 
 	let {
     children,
-		color
+		color,
+    title
 	}: {
     children: Snippet;
 		color: string;
+    title?: Snippet
 	} = $props();
 </script>
 
@@ -14,6 +16,10 @@
 	class="ring-opacity-5 overflow-hidden rounded-3xl shadow ring-3"
 	style={`--tw-ring-color: var(--color-${color})`}
 >
-	<div class="flex h-6 w-full" style={`background-color: var(--color-${color})`}></div>
+	<div class="flex min-h-6 w-full text-lg text-white" style={`background-color: var(--color-${color})`}>
+    {#if title}
+      {@render title()}
+    {/if}
+  </div>
   {@render children()}
 </div>

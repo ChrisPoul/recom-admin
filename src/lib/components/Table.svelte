@@ -19,13 +19,13 @@
 
 <div class="mt-8 flex flex-col">
 	<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-		<div class="inline-block min-w-full py-2 align-middle px-8">
+		<div class="inline-block min-w-full px-8 py-2 align-middle">
 			{#if data && data.length > 0}
 				<Card {color}>
-					<table class="min-w-full divide-y divide-gray-300">
+					<table class="min-w-full">
 						<thead
-							class="bg-gray-50 text-left text-sm [&_th]:font-medium [&_th]:px-3.5 [&_th]:py-3.5"
-                            style={`color: var(--color-${color})`}
+							class="bg-gray-50 text-left text-sm [&_th]:px-3.5 [&_th]:py-3.5 [&_th]:font-medium"
+							style={`color: var(--color-${color})`}
 						>
 							{@render header()}
 						</thead>
