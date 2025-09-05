@@ -16,7 +16,7 @@
 	class="ring-opacity-5 overflow-hidden rounded-3xl shadow ring-3"
 	style={`--tw-ring-color: var(--color-${color})`}
 >
-	<div class="flex min-h-6 w-full text-lg text-white" style={`background-color: var(--color-${color})`}>
+	<div class="flex min-h-6 w-full text-white" style={`background-color: var(--color-${color})`}>
     {#if title}
       {@render title()}
     {/if}
