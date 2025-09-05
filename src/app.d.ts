@@ -24,6 +24,7 @@ declare global {
 		cp: string;
 		terminosycondiciones: boolean;
 		INE: string;
+		bloqueado?: boolean;
 	}
 	interface Cotizacion {
 		id: string;

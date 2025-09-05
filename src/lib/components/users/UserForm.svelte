@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import Modal from '$lib/components/Modal.svelte';
-	import type { ActionData } from './$types';
+	import type { ActionData } from '../../../routes/users/$types';
 	import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 	import { app } from '$lib/firebase';
 
