@@ -26,7 +26,8 @@
 					{user.email}
 				</p>
 				<span
-					class={`mt-2 inline-flex items-center rounded-full px-3 py-1 text-sm font-medium text-white ${rolColors[user.rol] || 'bg-gray-400'}`}
+					class="mt-2 inline-flex items-center rounded-full px-3 py-1 text-sm font-medium text-white bg-gray-400"
+					style={`background-color: var(--color-${user.rol || 'admin'})`}
 				>
 					{user.rol || 'N/A'}
 				</span>

@@ -34,6 +34,15 @@ declare global {
 		monto: number;
 		estado: string;
 	}
+	interface Servicio {
+		id: string;
+		proveedor: DocumentReference;
+		created_time: string;
+		fotografias: string[];
+		horarios: string[];
+		rol_servicio: string;
+		cliente: DocumentReference;
+	}
 }
 
 export {};
