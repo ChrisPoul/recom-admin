@@ -2,7 +2,7 @@
 	import Card from '$lib/components/Card.svelte';
 
 	let { data } = $props();
-	const { user, services } = data;
+	const { user, services, tickets } = data;
 </script>
 
 <svelte:head>
@@ -35,7 +35,7 @@
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-x-8 border-t border-gray-200 md:grid-cols-2">
+		<div class="grid grid-cols-1 gap-x-8 border-t border-gray-200 md:grid-cols-3">
 			<!-- User Data -->
 			<div class={`px-4 py-5 sm:p-0 ${user.rol !== 'proveedor' ? 'md:col-span-2' : ''}`}>
 				<dl class={`sm:divide-y sm:divide-gray-200 ${user.rol === 'proveedor' ? '' : 'sm:grid sm:grid-cols-2'}`}>
@@ -111,6 +111,34 @@
 					</div>
 				</div>
 			{/if}
+
+            <!-- Tickets -->
+            <div class="px-4 py-5 sm:p-0">
+                <div>
+                    <h3 class="px-6 py-5 text-lg leading-6 font-medium text-gray-900">
+                        Tickets
+                    </h3>
+                    <dl class="sm:divide-y sm:divide-gray-200">
+                        {#if tickets && tickets.length > 0}
+                            {#each tickets as ticket}
+                                <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+                                    <dt class="text-sm font-medium text-gray-900 sm:col-span-2">{ticket.id}</dt>
+                                    <dd class="mt-1 text-right text-sm text-gray-900 sm:mt-0">
+                                        <a
+                                            href={`/tickets/${ticket.id}`}
+                                            class="text-indigo-600 hover:text-indigo-900">Ver</a
+                                        >
+                                    </dd>
+                                </div>
+                            {/each}
+                        {:else}
+                            <div class="px-6 py-5 text-sm text-gray-500">
+                                No hay tickets para este usuario.
+                            </div>
+                        {/if}
+                    </dl>
+                </div>
+            </div>
 		</div>
 
 		<!-- INE -->
@@ -121,9 +149,9 @@
 					<a href={user.INE} target="_blank" rel="noopener noreferrer">
 						<img src={user.INE} alt="INE" class="mx-auto mt-2 max-w-md rounded-lg border" />
 					</a>
-				{:else}
-					<p class="text-sm text-gray-500">N/A</p>
-				{/if}
+			{:else}
+				<p class="text-sm text-gray-500">N/A</p>
+			{/if}
 			</div>
 		</div>
 	</Card>

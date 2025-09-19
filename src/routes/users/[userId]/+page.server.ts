@@ -32,9 +32,15 @@ export async function load({ params }) {
 
         const user = makeSerializable({ uid: userDoc.id, ...userData });
 
+        const dummyTickets = [
+            { id: 'ticket-1', asunto: 'Problema con mi cuenta', estado: 'abierto' },
+            { id: 'ticket-2', asunto: 'Duda sobre facturación', estado: 'cerrado' }
+        ];
+
         return {
             user,
-            services
+            services,
+            tickets: dummyTickets
         };
 
     } catch (err: any) {
