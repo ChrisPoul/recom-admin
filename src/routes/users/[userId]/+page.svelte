@@ -1,3 +1,4 @@
+
 <script lang="ts">
 	import Card from '$lib/components/Card.svelte';
 
@@ -122,7 +123,7 @@
                         {#if tickets && tickets.length > 0}
                             {#each tickets as ticket}
                                 <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-                                    <dt class="text-sm font-medium text-gray-900 sm:col-span-2">{ticket.id}</dt>
+                                    <dt class="text-sm font-medium text-gray-900 sm:col-span-2">{ticket.asunto}</dt>
                                     <dd class="mt-1 text-right text-sm text-gray-900 sm:mt-0">
                                         <a
                                             href={`/tickets/${ticket.id}`}
