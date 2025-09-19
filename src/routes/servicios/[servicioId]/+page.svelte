@@ -30,5 +30,5 @@
     </div>
 
     <!-- Columna Derecha: Tabla de Cotizaciones -->
-    <CotizacionesTable cotizaciones={cotizaciones} title="Cotizaciones del Servicio" />
+    <CotizacionesTable cotizaciones={cotizaciones} />
 </div>
