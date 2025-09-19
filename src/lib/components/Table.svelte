@@ -7,13 +7,15 @@
 		key,
 		header,
 		row,
-		color
+		color,
+    tableTitle
 	}: {
 		data: Item[];
 		key: keyof Item;
 		header: Snippet;
 		row: Snippet<[Item]>;
 		color: string;
+		tableTitle?: string;
 	} = $props();
 </script>
 
@@ -22,6 +24,9 @@
 		<div class="inline-block min-w-full px-8 py-2 align-middle">
 			{#if data && data.length > 0}
 				<Card {color}>
+          {#snippet title()}
+            <span>{tableTitle}</span>
+          {/snippet}
 					<table class="min-w-full">
 						<thead
 							class="bg-gray-50 text-left text-sm [&_th]:px-3.5 [&_th]:py-3.5 [&_th]:font-medium"

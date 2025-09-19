@@ -44,8 +44,23 @@ export async function load({ params }) {
             cliente_id: clienteRef?.id || null,
         };
 
+        // Fetch cotizaciones for the service
+        const cotizacionesSnap = await db.collection('cotizaciones').where('servicio', '==', serviceRef).get();
+        const cotizaciones = await Promise.all(cotizacionesSnap.docs.map(async (doc) => {
+            const cotizacion = { id: doc.id, ...doc.data() };
+            let proveedorNombre = 'N/A';
+            if (cotizacion.proveedor instanceof DocumentReference) {
+                const proveedorSnap = await cotizacion.proveedor.get();
+                if (proveedorSnap.exists) {
+                    proveedorNombre = proveedorSnap.data()?.nombre || 'Nombre Desconocido';
+                }
+            }
+            return { ...cotizacion, proveedor_nombre: proveedorNombre };
+        }));
+
         return {
-            servicio: makeSerializable(enrichedService)
+            servicio: makeSerializable(enrichedService),
+            cotizaciones: makeSerializable(cotizaciones)
         };
 
     } catch (error) {
