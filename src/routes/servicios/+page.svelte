@@ -22,6 +22,7 @@
 		<Table data={data.servicios} key="id" color="residencial">
 			{#snippet header()}
 				<tr>
+			<th scope="col">UUID</th>
 					<th scope="col" class="sm:pl-6">Fotografía</th>
 					<th scope="col">Proveedor</th>
 					<th scope="col">Cliente</th>
@@ -32,6 +33,11 @@
 			{/snippet}
 			{#snippet row(servicio)}
 				<tr>
+					<td>
+						<a href={`/servicios/${servicio.id}`} class="font-medium text-gray-900 hover:text-indigo-600">
+							{servicio.id}
+						</a>
+					</td>
 					<td class="sm:pl-6">
 						{#if servicio.fotografias && servicio.fotografias.length > 0}
 							<img
