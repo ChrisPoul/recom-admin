@@ -5,18 +5,15 @@
 	let { users }: { users: User[] } = $props();
 </script>
 
-<Table data={users} color={$page.url.searchParams.get('rol') || 'admin'} key="uid">
+<Table data={users} color={$page.url.searchParams.get('rol') || 'admin'} key="uid" baseUrl="/users">
 	{#snippet header()}
-		<tr>
 			<th scope="col">Nombre</th>
 			<th scope="col">Contacto</th>
 			<th scope="col">Rol</th>
 			<th scope="col">Empresa</th>
 			<th scope="col">Status</th>
-		</tr>
 	{/snippet}
 	{#snippet row(user)}
-		<tr>
 			<td>
 				<div class="flex items-center gap-3">
 					<div class="h-10 w-10 flex-shrink-0">
@@ -57,6 +54,5 @@
 					{/if}
 				</span>
 			</td>
-		</tr>
 	{/snippet}
 </Table>

@@ -19,9 +19,8 @@
 			<p class="text-sm font-medium text-red-800">{data.error}</p>
 		</div>
 	{:else}
-		<Table data={data.servicios} key="id" color="residencial">
+		<Table data={data.servicios} key="id" color="residencial" baseUrl="/servicios">
 			{#snippet header()}
-				<tr>
 			<th scope="col">UUID</th>
 					<th scope="col" class="sm:pl-6">Fotografía</th>
 					<th scope="col">Proveedor</th>
@@ -29,10 +28,8 @@
 					<th scope="col">Rol del Servicio</th>
 					<th scope="col">Horarios</th>
 					<th scope="col">Fecha de Creación</th>
-				</tr>
 			{/snippet}
 			{#snippet row(servicio)}
-				<tr>
 					<td>
 						<a href={`/servicios/${servicio.id}`} class="font-medium text-gray-900 hover:text-indigo-600">
 							{servicio.id}
@@ -82,7 +79,6 @@
 						{/if}
 					</td>
 					<td>{new Date(servicio.created_time).toLocaleDateString()}</td>
-				</tr>
 			{/snippet}
 		</Table>
 	{/if}

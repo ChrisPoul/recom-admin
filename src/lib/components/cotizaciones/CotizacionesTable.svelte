@@ -4,20 +4,16 @@
 	let { cotizaciones }: { cotizaciones: any[] } = $props();
 </script>
 
-<Table data={cotizaciones} key="id" color="residencial">
+<Table data={cotizaciones} key="id" color="residencial" baseUrl="/cotizaciones">
 	{#snippet header()}
-		<tr>
 			<th scope="col">Nombre</th>
 			<th scope="col">Proveedor</th>
 			<th scope="col">Cliente</th>
 			<th scope="col">Precio</th>
 			<th scope="col">Tiempo</th>
 			<th scope="col">Estado</th>
-			<th scope="col"><span class="sr-only">Actions</span></th>
-		</tr>
 	{/snippet}
 	{#snippet row(cotizacion)}
-		<tr>
 			<td>{cotizacion.nombre}</td>
 			<td>{cotizacion.proveedor_nombre}</td>
 			<td>{cotizacion.cliente_nombre}</td>
@@ -36,12 +32,5 @@
 					{cotizacion.estado || 'N/A'}
 				</span>
 			</td>
-			<td class="text-right">
-				<a
-					href={`/cotizaciones/${cotizacion.id}`}
-					class="font-medium text-indigo-600 hover:text-indigo-900">Ver</a
-				>
-			</td>
-		</tr>
 	{/snippet}
 </Table>
