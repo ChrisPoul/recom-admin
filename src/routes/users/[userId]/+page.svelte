@@ -9,7 +9,7 @@
 	<title>Perfil de {user.nombre}</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl p-4 sm:p-6 lg:p-8">
+<div class="mx-auto p-4 sm:p-6 lg:p-8">
 	<Card color={user.rol || 'admin'}>
 		<div class="flex items-center gap-4 px-4 py-5 sm:px-6">
 			<div>
@@ -37,19 +37,19 @@
 
 		<div class="grid grid-cols-1 gap-x-8 border-t border-gray-200 md:grid-cols-2">
 			<!-- User Data -->
-			<div class="px-4 py-5 sm:p-0">
-				<dl class="sm:divide-y sm:divide-gray-200">
-					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+			<div class={`px-4 py-5 sm:p-0 ${user.rol !== 'proveedor' ? 'md:col-span-2' : ''}`}>
+				<dl class={`sm:divide-y sm:divide-gray-200 ${user.rol === 'proveedor' ? '' : 'sm:grid sm:grid-cols-2'}`}>
+					<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
 						<dt class="text-sm font-medium text-gray-500">Empresa</dt>
 						<dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
 							{user.empresa || 'N/A'}
 						</dd>
 					</div>
-					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+					<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
 						<dt class="text-sm font-medium text-gray-500">Celular</dt>
 						<dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{user.celuar || 'N/A'}</dd>
 					</div>
-					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+					<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
 						<dt class="text-sm font-medium text-gray-500">Status</dt>
 						<dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
 							<span
@@ -61,17 +61,17 @@
 							</span>
 						</dd>
 					</div>
-					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+					<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
 						<dt class="text-sm font-medium text-gray-500">Miembro desde</dt>
 						<dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
 							{new Date(user.created_time).toLocaleDateString()}
 						</dd>
 					</div>
-					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+					<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
 						<dt class="text-sm font-medium text-gray-500">Código Postal</dt>
 						<dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{user.cp || 'N/A'}</dd>
 					</div>
-					<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+					<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
 						<dt class="text-sm font-medium text-gray-500">Términos y Condiciones</dt>
 						<dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
 							<span
@@ -89,16 +89,16 @@
 			</div>
 
 			<!-- Services -->
-			<div class="px-4 py-5 sm:p-0">
-				{#if user.rol === 'proveedor' && services && services.length > 0}
+			{#if user.rol === 'proveedor' && services && services.length > 0}
+				<div class="px-4 py-5 sm:p-0">
 					<div>
 						<h3 class="px-6 py-5 text-lg leading-6 font-medium text-gray-900">
 							Servicios Ofrecidos
 						</h3>
 						<dl class="sm:divide-y sm:divide-gray-200">
 							{#each services as service}
-								<div class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-									<dt class="text-sm text-gray-900 sm:col-span-2">{service.name}</dt>
+								<div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+									<dt class="text-sm font-medium text-gray-900 sm:col-span-2">{service.name}</dt>
 									<dd class="mt-1 text-right text-sm text-gray-900 sm:mt-0">
 										<a
 											href={`/servicios/${service.id}`}
@@ -109,21 +109,21 @@
 							{/each}
 						</dl>
 					</div>
-				{/if}
-			</div>
-
-			<!-- INE -->
-			<div class="border-t border-gray-200 px-4 py-5 text-center sm:px-6 md:col-span-2">
-				<h3 class="text-lg leading-6 font-medium text-gray-900">INE</h3>
-				<div class="mt-4">
-					{#if user.INE}
-						<a href={user.INE} target="_blank" rel="noopener noreferrer">
-							<img src={user.INE} alt="INE" class="mx-auto mt-2 max-w-md rounded-lg border" />
-						</a>
-					{:else}
-						<p class="text-sm text-gray-500">N/A</p>
-					{/if}
 				</div>
+			{/if}
+		</div>
+
+		<!-- INE -->
+		<div class="border-t border-gray-200 px-4 py-5 text-center sm:px-6">
+			<h3 class="text-lg leading-6 font-medium text-gray-900">INE</h3>
+			<div class="mt-4">
+				{#if user.INE}
+					<a href={user.INE} target="_blank" rel="noopener noreferrer">
+						<img src={user.INE} alt="INE" class="mx-auto mt-2 max-w-md rounded-lg border" />
+					</a>
+				{:else}
+					<p class="text-sm text-gray-500">N/A</p>
+				{/if}
 			</div>
 		</div>
 	</Card>
