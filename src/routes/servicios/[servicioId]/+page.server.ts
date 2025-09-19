@@ -1,3 +1,4 @@
+
 import { db, makeSerializable } from '$lib/server/firebase';
 import { DocumentReference } from 'firebase-admin/firestore';
 
@@ -16,18 +17,18 @@ export async function load({ params }) {
         const service = { id: serviceSnap.id, ...serviceSnap.data() };
 
         // Fetch user data for proveedor and cliente
-        const userRefs: DocumentReference[] = [];
+        const serviceUserRefs: DocumentReference[] = [];
         if (service.proveedor instanceof DocumentReference) {
-            userRefs.push(service.proveedor);
+            serviceUserRefs.push(service.proveedor);
         }
         if (service.cliente instanceof DocumentReference) {
-            userRefs.push(service.cliente);
+            serviceUserRefs.push(service.cliente);
         }
 
-        const userDocsSnap = userRefs.length > 0 ? await db.getAll(...userRefs) : [];
+        const serviceUserDocsSnap = serviceUserRefs.length > 0 ? await db.getAll(...serviceUserRefs) : [];
         
         const usersMap = new Map<string, string>();
-        userDocsSnap.forEach(doc => {
+        serviceUserDocsSnap.forEach(doc => {
             if (doc.exists) {
                 usersMap.set(doc.id, doc.data()?.nombre || 'Nombre Desconocido');
             }
@@ -48,14 +49,31 @@ export async function load({ params }) {
         const cotizacionesSnap = await db.collection('cotizaciones').where('servicio', '==', serviceRef).get();
         const cotizaciones = await Promise.all(cotizacionesSnap.docs.map(async (doc) => {
             const cotizacion = { id: doc.id, ...doc.data() };
-            let proveedorNombre = 'N/A';
+            
+            const cotizacionUserRefs: DocumentReference[] = [];
             if (cotizacion.proveedor instanceof DocumentReference) {
-                const proveedorSnap = await cotizacion.proveedor.get();
-                if (proveedorSnap.exists) {
-                    proveedorNombre = proveedorSnap.data()?.nombre || 'Nombre Desconocido';
-                }
+                cotizacionUserRefs.push(cotizacion.proveedor);
             }
-            return { ...cotizacion, proveedor_nombre: proveedorNombre };
+            if (cotizacion.cliente instanceof DocumentReference) {
+                cotizacionUserRefs.push(cotizacion.cliente);
+            }
+
+            // Re-use the usersMap if possible, or fetch new users if needed.
+            const cotizacionUserDocsSnap = cotizacionUserRefs.length > 0 ? await db.getAll(...cotizacionUserRefs) : [];
+            cotizacionUserDocsSnap.forEach(userDoc => {
+                if (userDoc.exists && !usersMap.has(userDoc.id)) {
+                    usersMap.set(userDoc.id, userDoc.data()?.nombre || 'Nombre Desconocido');
+                }
+            });
+
+            const cotizacionProveedorRef = cotizacion.proveedor as DocumentReference;
+            const cotizacionClienteRef = cotizacion.cliente as DocumentReference;
+
+            return {
+                ...cotizacion,
+                proveedor_nombre: cotizacionProveedorRef ? usersMap.get(cotizacionProveedorRef.id) || 'N/A' : 'N/A',
+                cliente_nombre: cotizacionClienteRef ? usersMap.get(cotizacionClienteRef.id) || 'N/A' : 'N/A',
+            };
         }));
 
         return {
