@@ -46,7 +46,7 @@ export async function load({ params }) {
         };
 
         // Fetch cotizaciones for the service
-        const cotizacionesSnap = await db.collection('cotizaciones').where('servicio', '==', serviceRef).get();
+        const cotizacionesSnap = await db.collection('Cotizacion').where('servicio', '==', serviceRef).get();
         const cotizaciones = await Promise.all(cotizacionesSnap.docs.map(async (doc) => {
             const cotizacion = { id: doc.id, ...doc.data() };
             
