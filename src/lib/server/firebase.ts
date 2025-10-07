@@ -1,12 +1,17 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, Timestamp, DocumentReference } from 'firebase-admin/firestore';
+import {
+    FIREBASE_PROJECT_ID,
+    FIREBASE_CLIENT_EMAIL,
+    FIREBASE_PRIVATE_KEY
+} from '$env/static/private';
 
 // These would be your service account credentials
 const serviceAccount = {
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    clientEmail: import.meta.env.VITE_FIREBASE_CLIENT_EMAIL,
-    privateKey: import.meta.env.VITE_FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    projectId: FIREBASE_PROJECT_ID,
+    clientEmail: FIREBASE_CLIENT_EMAIL,
+    privateKey: FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
 }
 
 // Initialize Firebase Admin SDK
