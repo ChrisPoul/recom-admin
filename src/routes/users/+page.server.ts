@@ -5,28 +5,44 @@ import { fail } from '@sveltejs/kit';
 export async function load({ url }) {
     try {
         const rolFilter = url.searchParams.get('rol');
+        const searchQuery = url.searchParams.get('query');
 
         let usersQuery = db.collection('users').orderBy('created_time', 'desc');
 
-        if (rolFilter) {
-            usersQuery = usersQuery.where('rol', '==', rolFilter);
-        }
-
-        const firestoreUsersSnap = await usersQuery.get();
-        const firestoreUsers: User[] = [];
-        firestoreUsersSnap.forEach(doc => {
-            firestoreUsers.push(makeSerializable({ uid: doc.id, ...doc.data() }));
+        const allUsersSnap = await usersQuery.get();
+        let allUsers: User[] = [];
+        allUsersSnap.forEach(doc => {
+            allUsers.push(makeSerializable({ uid: doc.id, ...doc.data() }));
         });
 
+        const allUserNames = allUsers.map(user => user.nombre);
+
+        let filteredUsers = allUsers;
+
+        if (rolFilter) {
+            filteredUsers = filteredUsers.filter(user => user.rol === rolFilter);
+        }
+
+        if (searchQuery) {
+            const lowercasedQuery = searchQuery.toLowerCase();
+            filteredUsers = filteredUsers.filter(user => {
+                const nameMatch = user.nombre.toLowerCase().includes(lowercasedQuery);
+                const uidMatch = user.uid.includes(searchQuery);
+                return nameMatch || uidMatch;
+            });
+        }
 
         return {
-            users: firestoreUsers
+            users: filteredUsers,
+            allUserNames,
+            query: searchQuery
         };
 
     } catch (error) {
         console.error("Error listing users:", error);
         return {
             users: [],
+            allUserNames: [],
             error: "Failed to load users. Make sure your service account credentials are set correctly in .env and the 'users' collection exists in Firestore."
         };
     }
