@@ -7,7 +7,6 @@
 
 	const navLinks = [
 		{ href: '/', label: 'Dashboard', icon: 'dashboard.svg' },
-		{ href: '/cotizaciones', label: 'Cotizaciones', icon: 'cotizaciones.svg' },
 		{ href: '/servicios', label: 'Servicios', icon: 'servicios.svg' },
 		{
 			label: 'Usuarios',
