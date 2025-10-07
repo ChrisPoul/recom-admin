@@ -1,6 +1,8 @@
+
 <script lang="ts">
     import Card from "$lib/components/Card.svelte";
     import UserForm from "$lib/components/users/UserForm.svelte";
+    import { enhance } from "$app/forms";
 
 	let { data, form } = $props();
 	const { user, services } = data;
@@ -36,7 +38,16 @@
                     </span>
                 </div>
             </div>
-            <UserForm {form} user={user} />
+            <div class="flex items-center gap-4">
+                <form method="POST" action="?/toggleBlock">
+                    <input type="hidden" name="uid" value={user.uid} />
+                    <input type="hidden" name="disabled" value={user.disabled} />
+                    <button type="submit" class={`inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto ${user.disabled ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'}`}>
+                        {user.disabled ? 'Desbloquear' : 'Bloquear'}
+                    </button>
+                </form>
+                <UserForm {form} user={user} />
+            </div>
         </div>
 
         <div class="border-t border-gray-200 grid grid-cols-1 md:grid-cols-3 gap-x-8">

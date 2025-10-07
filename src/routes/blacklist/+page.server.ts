@@ -4,7 +4,7 @@ export async function load() {
 	try {
 		const blacklistQuery = db
 			.collection('users')
-			.where('bloqueado', '==', true)
+			.where('disabled', '==', true)
 			.orderBy('created_time', 'desc');
 
 		const blacklistSnap = await blacklistQuery.get();

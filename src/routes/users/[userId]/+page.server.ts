@@ -1,3 +1,4 @@
+
 import { db, auth, makeSerializable } from '$lib/server/firebase';
 import { DocumentReference } from 'firebase-admin/firestore';
 import { error, fail, redirect } from '@sveltejs/kit';
@@ -119,6 +120,26 @@ export const actions = {
             if (error.location) {
                 throw error; // It's a redirect
             }
+            return fail(500, { error: error.message });
+        }
+    },
+
+    toggleBlock: async ({ request }) => {
+        const data = await request.formData();
+        const uid = data.get('uid') as string;
+        const disabled = data.get('disabled') === 'true';
+
+        if (!uid) {
+            return fail(400, { error: 'UID is required to block/unblock.' });
+        }
+
+        try {
+            await auth.updateUser(uid, { disabled: !disabled });
+            await db.collection('users').doc(uid).update({ disabled: !disabled });
+
+            return { success: true };
+
+        } catch (error: any) {
             return fail(500, { error: error.message });
         }
     }
