@@ -20,7 +20,7 @@
 			]
 		},
 		{ href: '/blacklist', label: 'Blacklist', icon: 'blacklist.svg' },
-		{ href: '/editar', label: 'Editar', icon: 'editar.svg' },
+		// { href: '/editar', label: 'Editar', icon: 'editar.svg' },
 		{ href: '/tickets', label: 'Tickets', icon: 'tickets.svg' }
 	];
 </script>
