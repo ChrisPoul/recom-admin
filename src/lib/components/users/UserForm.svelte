@@ -1,3 +1,4 @@
+
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
@@ -23,42 +24,24 @@
 		}
 	}
 
-	async function handleSubmit(event: Event) {
-		event.preventDefault();
-		const formElement = event.target as HTMLFormElement;
+    async function handleFileChange(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (!input.files || input.files.length === 0) return;
+        ineFile = input.files[0];
 
-		if (ineFile) {
-			isUploading = true;
-			uploadError = '';
-			const storageRef = ref(storage, `user_ines/${Date.now()}_${ineFile.name}`);
-			try {
-				const snapshot = await uploadBytes(storageRef, ineFile);
-				ineUrl = await getDownloadURL(snapshot.ref);
-			} catch (error: any) {
-				console.error('Error uploading file:', error);
-				uploadError = 'Error al subir la imagen. Inténtalo de nuevo.';
-				isUploading = false;
-				return; // Stop form submission on upload error
-			} finally {
-				isUploading = false;
-			}
-		}
-
-		// Manually submit the form data using fetch after potential upload
-		const formData = new FormData(formElement);
-		formData.set('INE', ineUrl); // Ensure the hidden input value is up-to-date
-
-		await fetch(formElement.action, {
-			method: 'POST',
-			body: formData
-		}).then(async (res) => {
-			const result = await res.json();
-			if (result.type === 'success') {
-				isModalOpen = false;
-			}
-			await invalidateAll();
-		});
-	}
+        isUploading = true;
+        uploadError = '';
+        const storageRef = ref(storage, `user_ines/${Date.now()}_${ineFile.name}`);
+        try {
+            const snapshot = await uploadBytes(storageRef, ineFile);
+            ineUrl = await getDownloadURL(snapshot.ref);
+        } catch (error: any) {
+            console.error('Error uploading file:', error);
+            uploadError = 'Error al subir la imagen. Inténtalo de nuevo.';
+        } finally {
+            isUploading = false;
+        }
+    }
 
 	function formatCelular(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -85,7 +68,14 @@
 	<form
 		method="POST"
 		action={`?/${isEditing ? 'edit' : 'register'}`}
-		onsubmit={handleSubmit}
+        use:enhance={() => {
+            return async ({ result }) => {
+                if (result.type === 'success') {
+                    isModalOpen = false;
+                }
+                await invalidateAll();
+            };
+        }}
 		class="w-full min-w-xl rounded-lg bg-white p-8 shadow-xl"
 		enctype="multipart/form-data"
 	>
@@ -159,7 +149,7 @@
             </div>
             <div>
                 <label for="ine-upload" class="block text-sm font-medium text-gray-700">INE</label>
-                <input onchange={(e) => ineFile = e.target.files[0]} id="ine-upload" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                <input onchange={handleFileChange} id="ine-upload" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
 				<input type="hidden" name="INE" bind:value={ineUrl} />
 				{#if ineUrl}
 					<div class="mt-4">

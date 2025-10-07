@@ -1,6 +1,6 @@
-import { db, makeSerializable } from '$lib/server/firebase';
+import { db, auth, makeSerializable } from '$lib/server/firebase';
 import { DocumentReference } from 'firebase-admin/firestore';
-import { error } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 
 export async function load({ params }) {
     try {
@@ -51,3 +51,75 @@ export async function load({ params }) {
         throw error(500, 'Failed to load user data.');
     }
 }
+
+export const actions = {
+    edit: async ({ request }) => {
+        const data = await request.formData();
+        const uid = data.get('uid') as string;
+        const nombre = data.get('nombre') as string;
+        const rol = data.get('rol') as string;
+        const empresa = data.get('empresa') as string;
+        const celuar = data.get('celuar') as string;
+        const cp = data.get('cp') as string;
+        const terminosycondiciones = !!data.get('terminosycondiciones');
+        const INE = data.get('INE') as string;
+
+        if (!uid) {
+            return fail(400, { error: 'UID is required for an update.' });
+        }
+
+        try {
+            // Update Auth
+            await auth.updateUser(uid, {
+                displayName: nombre
+            });
+
+            // Build update object for Firestore
+            const updateData: { [key: string]: any } = {
+                nombre,
+                rol,
+                empresa,
+                celuar,
+                cp,
+                terminosycondiciones
+            };
+
+            // Only update INE if a new URL was provided
+            if (INE) {
+                updateData.INE = INE;
+            }
+
+            // Update Firestore
+            await db.collection('users').doc(uid).update(updateData);
+
+            return { success: true, message: 'Usuario actualizado con éxito' };
+
+        } catch (error: any) {
+            return fail(500, { error: error.message });
+        }
+    },
+
+    delete: async ({ request }) => {
+        const data = await request.formData();
+        const uid = data.get('uid') as string;
+
+        if (!uid) {
+            return fail(400, { error: 'UID is required for deletion.' });
+        }
+
+        try {
+            // Delete from Auth
+            await auth.deleteUser(uid);
+            // Delete from Firestore
+            await db.collection('users').doc(uid).delete();
+
+            throw redirect(303, '/users');
+
+        } catch (error: any) {
+            if (error.location) {
+                throw error; // It's a redirect
+            }
+            return fail(500, { error: error.message });
+        }
+    }
+};
