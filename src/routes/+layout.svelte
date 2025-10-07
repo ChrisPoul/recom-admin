@@ -82,6 +82,14 @@
 				{/each}
 			</ul>
 		</nav>
+        <div class="mt-auto">
+            <form method="POST" action="/logout">
+                <button type="submit" class="flex w-full items-center rounded-lg px-4 py-2 text-left hover:bg-gray-700 hover:text-white">
+                    <img src="/side-menu/logout.svg" alt="" class="mr-3 h-6 w-6" />
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
 	</aside>
 
 	<!-- Main Content -->
