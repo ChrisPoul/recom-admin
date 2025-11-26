@@ -18,16 +18,24 @@
         {#snippet header()}
             <th scope="col">Usuario</th>
             <th scope="col">Servicio</th>
-            <th scope="col">Proveedor</th>
-            <th scope="col">Creado</th>
-            <th scope="col">Razón</th>
+            <th scope="col">Título</th>
+            <th scope="col">Estado</th>
         {/snippet}
         {#snippet row(ticket)}
             <td>{ticket.cliente_nombre}</td>
             <td>{ticket.servicio_nombre}</td>
-            <td>{ticket.proveedor_nombre}</td>
-            <td>{new Date(ticket.timestamp._seconds * 1000).toLocaleDateString()}</td>
-            <td>{ticket.razon}</td>
+            <td>{ticket.titulo || 'Sin título'}</td>
+            <td>
+                <span
+                    class={`inline-flex rounded-full px-2 text-xs leading-5 font-semibold ${
+                        (ticket.status || '').toLowerCase() === 'abierto'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-green-100 text-green-800'
+                    }`}
+                >
+                    {ticket.status || 'Abierto'}
+                </span>
+            </td>
         {/snippet}
     </Table>
 </div>

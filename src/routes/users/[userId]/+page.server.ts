@@ -33,15 +33,26 @@ export async function load({ params }) {
 
         const user = makeSerializable({ uid: userDoc.id, ...userData });
 
-        const dummyTickets = [
-            { id: 'ticket-1', asunto: 'Problema con mi cuenta', estado: 'abierto' },
-            { id: 'ticket-2', asunto: 'Duda sobre facturación', estado: 'cerrado' }
-        ];
+        // Fetch tickets for this user
+        const userRef = db.collection('users').doc(userId);
+        const ticketsSnap = await db.collection('tickets').where('cliente', '==', userRef).get();
+        
+        const tickets = ticketsSnap.docs.map(doc => {
+            const ticketData = doc.data();
+            return {
+                id: doc.id,
+                titulo: ticketData?.titulo || 'Sin título',
+                status: ticketData?.status || 'Abierto',
+                // Map to asunto for UI compatibility
+                asunto: ticketData?.titulo || 'Sin título',
+                estado: ticketData?.status || 'Abierto'
+            };
+        });
 
         return {
             user,
             services,
-            tickets: dummyTickets
+            tickets: makeSerializable(tickets)
         };
 
     } catch (err: any) {

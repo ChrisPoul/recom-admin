@@ -2,7 +2,7 @@
 <script lang="ts">
     import Card from "$lib/components/Card.svelte";
     import UserForm from "$lib/components/users/UserForm.svelte";
-    import { enhance } from "$app/forms";
+    import BackButton from "$lib/components/BackButton.svelte";
 
 	let { data, form } = $props();
 	const { user, services } = data;
@@ -13,6 +13,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl p-4 sm:p-6 lg:p-8">
+    <BackButton href="/users" />
     <Card color={user.rol || 'admin'}>
         <div class="flex items-center justify-between px-4 py-5 sm:px-6">
             <div class="flex items-center gap-4">
@@ -135,7 +136,7 @@
                         {#if data.tickets && data.tickets.length > 0}
                             {#each data.tickets as ticket}
                                 <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-                                    <dt class="text-sm font-medium text-gray-900 sm:col-span-2">{ticket.asunto}</dt>
+                                    <dt class="text-sm font-medium text-gray-900 sm:col-span-2">{ticket.titulo}</dt>
                                     <dd class="mt-1 text-right text-sm text-gray-900 sm:mt-0">
                                         <a
                                             href={`/tickets/${ticket.id}`}

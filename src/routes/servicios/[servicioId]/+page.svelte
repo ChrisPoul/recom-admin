@@ -1,5 +1,6 @@
 <script lang="ts">
     import CotizacionesTable from "$lib/components/cotizaciones/CotizacionesTable.svelte";
+    import BackButton from "$lib/components/BackButton.svelte";
 
 	let { data } = $props();
 	const { servicio, cotizaciones } = data;
@@ -10,6 +11,7 @@
 </svelte:head>
 
 <div class=" gap-8 p-4 sm:p-6 lg:p-8">
+    <BackButton href="/servicios" />
     <!-- Columna Izquierda: Detalles del Servicio -->
     <div class="overflow-hidden bg-white shadow sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6">
