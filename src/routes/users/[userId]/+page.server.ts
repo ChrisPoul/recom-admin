@@ -49,10 +49,23 @@ export async function load({ params }) {
             };
         });
 
+        // Fetch direcciones from subcollection
+        const direccionesSnap = await db.collection('users').doc(userId).collection('direcciones').get();
+        const direcciones = direccionesSnap.docs.map(doc => {
+            const direccionData = doc.data();
+            return {
+                id: doc.id,
+                direccion: direccionData?.direccion || '',
+                n_exterior: direccionData?.n_exterior || '',
+                n_interior: direccionData?.n_interior || ''
+            };
+        });
+
         return {
             user,
             services,
-            tickets: makeSerializable(tickets)
+            tickets: makeSerializable(tickets),
+            direcciones: makeSerializable(direcciones)
         };
 
     } catch (err: any) {
@@ -71,13 +84,21 @@ export const actions = {
         const nombre = data.get('nombre') as string;
         const rol = data.get('rol') as string;
         const empresa = data.get('empresa') as string;
-        const celuar = data.get('celuar') as string;
-        const cp = data.get('cp') as string;
+        const celular = data.get('celular') as string;
         const terminosycondiciones = !!data.get('terminosycondiciones');
-        const INE = data.get('INE') as string;
+        const ine_frontal = data.get('ine_frontal') as string;
+        const ine_trasera = data.get('ine_trasera') as string;
+        const ine_selfie = data.get('ine_selfie') as string;
 
         if (!uid) {
             return fail(400, { error: 'UID is required for an update.' });
+        }
+
+        // Validate INE images for proveedor role
+        if (rol === 'proveedor') {
+            if (!ine_frontal || !ine_trasera || !ine_selfie) {
+                return fail(400, { error: 'Las 3 imágenes de INE (frontal, trasera y selfie) son requeridas para usuarios proveedor.' });
+            }
         }
 
         try {
@@ -91,14 +112,20 @@ export const actions = {
                 nombre,
                 rol,
                 empresa,
-                celuar,
-                cp,
+                celular,
                 terminosycondiciones
             };
 
-            // Only update INE if a new URL was provided
-            if (INE) {
-                updateData.INE = INE;
+            // Update INE images if rol is proveedor
+            if (rol === 'proveedor') {
+                if (ine_frontal) updateData.ine_frontal = ine_frontal;
+                if (ine_trasera) updateData.ine_trasera = ine_trasera;
+                if (ine_selfie) updateData.ine_selfie = ine_selfie;
+            } else {
+                // Remove INE images if role changed from proveedor to something else
+                updateData.ine_frontal = null;
+                updateData.ine_trasera = null;
+                updateData.ine_selfie = null;
             }
 
             // Update Firestore

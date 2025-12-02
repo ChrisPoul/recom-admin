@@ -57,13 +57,21 @@ export const actions = {
         const nombre = data.get('nombre') as string;
         const rol = data.get('rol') as string;
         const empresa = data.get('empresa') as string;
-        const celuar = data.get('celuar') as string;
-        const cp = data.get('cp') as string;
+        const celular = data.get('celular') as string;
         const terminosycondiciones = !!data.get('terminosycondiciones');
-        const INE = data.get('INE') as string;
+        const ine_frontal = data.get('ine_frontal') as string;
+        const ine_trasera = data.get('ine_trasera') as string;
+        const ine_selfie = data.get('ine_selfie') as string;
 
         if (!email || !password || !nombre) {
             return fail(400, { error: 'Email, contraseña y nombre son requeridos.' });
+        }
+
+        // Validate INE images for proveedor role
+        if (rol === 'proveedor') {
+            if (!ine_frontal || !ine_trasera || !ine_selfie) {
+                return fail(400, { error: 'Las 3 imágenes de INE (frontal, trasera y selfie) son requeridas para usuarios proveedor.' });
+            }
         }
 
         try {
@@ -74,19 +82,27 @@ export const actions = {
                 displayName: nombre
             });
 
-            // Create user document in Firestore
-            await db.collection('users').doc(userRecord.uid).set({
+            // Build user document data
+            const userData: { [key: string]: any } = {
                 uid: userRecord.uid,
                 nombre,
                 email,
                 rol,
                 empresa,
-                celuar,
-                cp,
+                celular,
                 terminosycondiciones,
-                INE,
                 created_time: Timestamp.now()
-            });
+            };
+
+            // Only add INE images if rol is proveedor
+            if (rol === 'proveedor') {
+                userData.ine_frontal = ine_frontal;
+                userData.ine_trasera = ine_trasera;
+                userData.ine_selfie = ine_selfie;
+            }
+
+            // Create user document in Firestore
+            await db.collection('users').doc(userRecord.uid).set(userData);
 
             return { success: true, message: 'Usuario creado con éxito' };
 

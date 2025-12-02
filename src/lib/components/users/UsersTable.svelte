@@ -30,7 +30,7 @@
 			</td>
 			<td>
 				<div class="text-gray-900">{user.email}</div>
-				<div>{user.celuar}</div>
+				<div>{user.celular}</div>
 			</td>
 			<td>
 				<span

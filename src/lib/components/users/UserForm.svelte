@@ -15,8 +15,13 @@
 	let isEditing = $derived(!!user);
 	let isUploading = $state(false);
 	let uploadError = $state('');
-	let ineFile: File | null = $state(null);
-	let ineUrl = $state(user?.INE || '');
+	let selectedRol = $state(user?.rol || 'residencial');
+	
+	// States for the 3 INE images
+	let ineFrontalUrl = $state(user?.ine_frontal || '');
+	let ineTraseraUrl = $state(user?.ine_trasera || '');
+	let ineSelfieUrl = $state(user?.ine_selfie || '');
+	let uploadingImage = $state<string | null>(null);
 
 	function handleDelete(event: Event) {
 		if (!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción es irreversible.')) {
@@ -24,24 +29,45 @@
 		}
 	}
 
-    async function handleFileChange(event: Event) {
+    async function handleFileChange(event: Event, imageType: 'frontal' | 'trasera' | 'selfie') {
         const input = event.target as HTMLInputElement;
         if (!input.files || input.files.length === 0) return;
-        ineFile = input.files[0];
+        const file = input.files[0];
 
         isUploading = true;
         uploadError = '';
-        const storageRef = ref(storage, `user_ines/${Date.now()}_${ineFile.name}`);
+        uploadingImage = imageType;
+        const storageRef = ref(storage, `user_ines/${Date.now()}_${imageType}_${file.name}`);
         try {
-            const snapshot = await uploadBytes(storageRef, ineFile);
-            ineUrl = await getDownloadURL(snapshot.ref);
+            const snapshot = await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(snapshot.ref);
+            
+            // Update the corresponding URL state
+            if (imageType === 'frontal') {
+                ineFrontalUrl = url;
+            } else if (imageType === 'trasera') {
+                ineTraseraUrl = url;
+            } else if (imageType === 'selfie') {
+                ineSelfieUrl = url;
+            }
         } catch (error: any) {
             console.error('Error uploading file:', error);
             uploadError = 'Error al subir la imagen. Inténtalo de nuevo.';
         } finally {
             isUploading = false;
+            uploadingImage = null;
         }
     }
+
+	function validateForm(): boolean {
+		if (selectedRol === 'proveedor') {
+			if (!ineFrontalUrl || !ineTraseraUrl || !ineSelfieUrl) {
+				uploadError = 'Las 3 imágenes de INE son requeridas para usuarios proveedor.';
+				return false;
+			}
+		}
+		return true;
+	}
 
 	function formatCelular(event: Event) {
 		const input = event.target as HTMLInputElement;
@@ -69,7 +95,12 @@
 		method="POST"
 		action={`?/${isEditing ? 'edit' : 'register'}`}
         use:enhance={() => {
-            return async ({ result }) => {
+            return async ({ result, cancel }) => {
+				// Validate before submitting
+				if (!validateForm()) {
+					cancel();
+					return;
+				}
                 if (result.type === 'success') {
                     isModalOpen = false;
                 }
@@ -112,12 +143,12 @@
 				<input type="password" name="password" id="password" class="mt-1 form-input" disabled={isEditing} placeholder={isEditing ? 'No se puede cambiar' : ''} required={!isEditing} />
 			</div>
 			<div>
-				<label for="celuar" class="block text-sm font-medium text-gray-700">Celular</label>
+				<label for="celular" class="block text-sm font-medium text-gray-700">Celular</label>
 				<input
 					type="tel"
-					name="celuar"
-					id="celuar"
-					value={user?.celuar || ''}
+					name="celular"
+					id="celular"
+					value={user?.celular || ''}
 					class="mt-1 form-input"
 					oninput={formatCelular}
 				/>
@@ -126,13 +157,9 @@
 				<label for="empresa" class="block text-sm font-medium text-gray-700">Empresa</label>
 				<input type="text" name="empresa" id="empresa" value={user?.empresa || ''} class="mt-1 form-input" />
 			</div>
-            <div>
-				<label for="cp" class="block text-sm font-medium text-gray-700">Código Postal</label>
-				<input type="text" name="cp" id="cp" value={user?.cp || ''} class="mt-1 form-input" />
-			</div>
 			<div>
 				<label for="rol" class="block text-sm font-medium text-gray-700">Rol</label>
-				<select name="rol" id="rol" class="mt-1 form-input" value={user?.rol || 'residencial'}>
+				<select name="rol" id="rol" class="mt-1 form-input" bind:value={selectedRol}>
 					<option value="admin">Admin</option>
 					<option value="proveedor">Proveedor</option>
 					<option value="residencial">Residencial</option>
@@ -147,19 +174,77 @@
                     <label for="terminosycondiciones" class="font-medium text-gray-700">Acepta Términos y Condiciones</label>
                 </div>
             </div>
-            <div>
-                <label for="ine-upload" class="block text-sm font-medium text-gray-700">INE</label>
-                <input onchange={handleFileChange} id="ine-upload" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
-				<input type="hidden" name="INE" bind:value={ineUrl} />
-				{#if ineUrl}
-					<div class="mt-4">
-						<p class="text-sm text-gray-500">INE Actual:</p>
-						<a href={ineUrl} target="_blank" rel="noopener noreferrer">
-							<img src={ineUrl} alt="INE Preview" class="mt-2 h-24 w-auto rounded-lg border" />
-						</a>
-					</div>
-				{/if}
-            </div>
+            {#if selectedRol === 'proveedor'}
+                <div>
+                    <label for="ine-frontal-upload" class="block text-sm font-medium text-gray-700">INE Frontal <span class="text-red-500">*</span></label>
+                    <input 
+                        onchange={(e) => handleFileChange(e, 'frontal')} 
+                        id="ine-frontal-upload" 
+                        type="file" 
+                        accept="image/*"
+                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        required={selectedRol === 'proveedor' && !ineFrontalUrl}
+                    />
+                    <input type="hidden" name="ine_frontal" bind:value={ineFrontalUrl} />
+                    {#if ineFrontalUrl}
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">INE Frontal Actual:</p>
+                            <a href={ineFrontalUrl} target="_blank" rel="noopener noreferrer">
+                                <img src={ineFrontalUrl} alt="INE Frontal Preview" class="mt-2 h-24 w-auto rounded-lg border" />
+                            </a>
+                        </div>
+                    {/if}
+                    {#if uploadingImage === 'frontal'}
+                        <p class="mt-2 text-sm text-blue-600">Subiendo imagen...</p>
+                    {/if}
+                </div>
+                <div>
+                    <label for="ine-trasera-upload" class="block text-sm font-medium text-gray-700">INE Trasera <span class="text-red-500">*</span></label>
+                    <input 
+                        onchange={(e) => handleFileChange(e, 'trasera')} 
+                        id="ine-trasera-upload" 
+                        type="file" 
+                        accept="image/*"
+                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        required={selectedRol === 'proveedor' && !ineTraseraUrl}
+                    />
+                    <input type="hidden" name="ine_trasera" bind:value={ineTraseraUrl} />
+                    {#if ineTraseraUrl}
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">INE Trasera Actual:</p>
+                            <a href={ineTraseraUrl} target="_blank" rel="noopener noreferrer">
+                                <img src={ineTraseraUrl} alt="INE Trasera Preview" class="mt-2 h-24 w-auto rounded-lg border" />
+                            </a>
+                        </div>
+                    {/if}
+                    {#if uploadingImage === 'trasera'}
+                        <p class="mt-2 text-sm text-blue-600">Subiendo imagen...</p>
+                    {/if}
+                </div>
+                <div>
+                    <label for="ine-selfie-upload" class="block text-sm font-medium text-gray-700">INE Selfie <span class="text-red-500">*</span></label>
+                    <input 
+                        onchange={(e) => handleFileChange(e, 'selfie')} 
+                        id="ine-selfie-upload" 
+                        type="file" 
+                        accept="image/*"
+                        class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        required={selectedRol === 'proveedor' && !ineSelfieUrl}
+                    />
+                    <input type="hidden" name="ine_selfie" bind:value={ineSelfieUrl} />
+                    {#if ineSelfieUrl}
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500">INE Selfie Actual:</p>
+                            <a href={ineSelfieUrl} target="_blank" rel="noopener noreferrer">
+                                <img src={ineSelfieUrl} alt="INE Selfie Preview" class="mt-2 h-24 w-auto rounded-lg border" />
+                            </a>
+                        </div>
+                    {/if}
+                    {#if uploadingImage === 'selfie'}
+                        <p class="mt-2 text-sm text-blue-600">Subiendo imagen...</p>
+                    {/if}
+                </div>
+            {/if}
 		</div>
 
 		<div class="mt-8 flex items-center justify-between">

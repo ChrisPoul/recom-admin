@@ -37,7 +37,7 @@
 		<aside class="flex w-64 flex-shrink-0 flex-col bg-gray-800 p-4 text-gray-300">
 			<div class="mb-10 flex items-center px-2">
 				<a href="/">
-					<h1 class="text-2xl font-bold text-white">Recom Admin</h1>
+					<h1 class="text-2xl font-bold text-white">Conax Admin</h1>
 				</a>
 			</div>
 			<nav class="flex-grow">

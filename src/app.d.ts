@@ -21,10 +21,17 @@ declare global {
 		empresa: string;
 		disabled: boolean;
 		created_time: string;
-		cp: string;
 		terminosycondiciones: boolean;
-		INE: string;
+		ine_frontal?: string;
+		ine_trasera?: string;
+		ine_selfie?: string;
 		bloqueado?: boolean;
+	}
+	interface Direccion {
+		id: string;
+		direccion: string;
+		n_exterior: string;
+		n_interior: string;
 	}
 	interface Cotizacion {
 		id: string;

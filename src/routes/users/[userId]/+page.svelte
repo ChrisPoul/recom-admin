@@ -5,7 +5,7 @@
     import BackButton from "$lib/components/BackButton.svelte";
 
 	let { data, form } = $props();
-	const { user, services } = data;
+	const { user, services, direcciones = [] } = data;
 </script>
 
 <svelte:head>
@@ -61,7 +61,7 @@
                     </div>
                     <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                         <dt class="text-sm font-medium text-gray-500">Celular</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{user.celuar || 'N/A'}</dd>
+                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{user.celular || 'N/A'}</dd>
                     </div>
                     <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                         <dt class="text-sm font-medium text-gray-500">Status</dt>
@@ -80,10 +80,6 @@
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                             {new Date(user.created_time).toLocaleDateString()}
                         </dd>
-                    </div>
-                    <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-                        <dt class="text-sm font-medium text-gray-500">Código Postal</dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{user.cp || 'N/A'}</dd>
                     </div>
                     <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
                         <dt class="text-sm font-medium text-gray-500">Términos y Condiciones</dt>
@@ -155,18 +151,77 @@
             </div>
         </div>
 
-        <!-- INE -->
-        <div class="border-t border-gray-200 px-4 py-5 text-center sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">INE</h3>
-            <div class="mt-4">
-                {#if user.INE}
-                    <a href={user.INE} target="_blank" rel="noopener noreferrer">
-                        <img src={user.INE} alt="INE" class="mx-auto mt-2 max-w-md rounded-lg border" />
-                    </a>
-                {:else}
-                    <p class="text-sm text-gray-500">N/A</p>
-                {/if}
-            </div>
+        <!-- Direcciones -->
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Direcciones</h3>
+            {#if direcciones && direcciones.length > 0}
+                <div class="space-y-4">
+                    {#each direcciones as direccion}
+                        <div class="rounded-lg border border-gray-200 bg-white p-4">
+                            <div class="space-y-2">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">Dirección:</span>
+                                    <p class="mt-1 text-sm text-gray-900">{direccion.direccion || 'N/A'}</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-700">Número Exterior:</span>
+                                        <p class="mt-1 text-sm text-gray-900">{direccion.n_exterior || 'N/A'}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-700">Número Interior:</span>
+                                        <p class="mt-1 text-sm text-gray-900">{direccion.n_interior || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {/each}
+                </div>
+            {:else}
+                <p class="text-sm text-gray-500">No hay direcciones registradas para este usuario.</p>
+            {/if}
         </div>
+
+        <!-- INE Images (only for proveedor) -->
+        {#if user.rol === 'proveedor'}
+            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Documentos de Identificación</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- INE Frontal -->
+                    <div class="text-center">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">INE Frontal</h4>
+                        {#if user.ine_frontal}
+                            <a href={user.ine_frontal} target="_blank" rel="noopener noreferrer">
+                                <img src={user.ine_frontal} alt="INE Frontal" class="mx-auto mt-2 max-w-full rounded-lg border hover:opacity-80 transition-opacity" />
+                            </a>
+                        {:else}
+                            <p class="text-sm text-gray-500 mt-2">No disponible</p>
+                        {/if}
+                    </div>
+                    <!-- INE Trasera -->
+                    <div class="text-center">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">INE Trasera</h4>
+                        {#if user.ine_trasera}
+                            <a href={user.ine_trasera} target="_blank" rel="noopener noreferrer">
+                                <img src={user.ine_trasera} alt="INE Trasera" class="mx-auto mt-2 max-w-full rounded-lg border hover:opacity-80 transition-opacity" />
+                            </a>
+                        {:else}
+                            <p class="text-sm text-gray-500 mt-2">No disponible</p>
+                        {/if}
+                    </div>
+                    <!-- INE Selfie -->
+                    <div class="text-center">
+                        <h4 class="text-sm font-medium text-gray-700 mb-2">INE Selfie</h4>
+                        {#if user.ine_selfie}
+                            <a href={user.ine_selfie} target="_blank" rel="noopener noreferrer">
+                                <img src={user.ine_selfie} alt="INE Selfie" class="mx-auto mt-2 max-w-full rounded-lg border hover:opacity-80 transition-opacity" />
+                            </a>
+                        {:else}
+                            <p class="text-sm text-gray-500 mt-2">No disponible</p>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        {/if}
     </Card>
 </div>

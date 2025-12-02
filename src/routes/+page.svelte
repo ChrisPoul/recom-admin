@@ -21,7 +21,7 @@
 			color: 'empresa' // Corresponds to --color-empresa
 		},
 		{
-			title: 'CALIFICACIÓN RECOM',
+			title: 'CALIFICACIÓN CONAX',
 			value: stats.recomRating,
 			color: 'residencial' // Corresponds to --color-residencial
 		}
