@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 
-@theme {
+/* Expose role colors as real CSS custom properties so var(--color-${role}) works in inline styles (e.g. user.rol) */
+:root {
 	--color-proveedor: #59caf3;
 	--color-residencial: #096aa2;
 	--color-empresa: #fda116;
