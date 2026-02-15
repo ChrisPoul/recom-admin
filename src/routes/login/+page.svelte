@@ -6,13 +6,13 @@
 </script>
 
 <svelte:head>
-    <title>Login</title>
+    <title>Iniciar Sesión</title>
 </svelte:head>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-100">
     <div class="w-full max-w-md">
         <div class="rounded-lg bg-white p-8 shadow-lg">
-            <h1 class="mb-6 text-center text-2xl font-bold">Admin Login</h1>
+            <h1 class="mb-6 text-center text-2xl font-bold">Inicio de Sesión de Administrador</h1>
             <form method="POST" action="?/login">
                 {#if form?.error}
                     <div class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700" role="alert">
@@ -43,7 +43,7 @@
                     type="submit" 
                     class="w-full rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                    Login
+                    Iniciar Sesión
                 </button>
             </form>
         </div>

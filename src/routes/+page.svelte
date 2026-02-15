@@ -8,28 +8,28 @@
 		{
 			title: 'USUARIOS ACTIVOS',
 			value: stats.activeUsers,
-			color: 'admin' // Corresponds to --color-admin in app.css
+			color: 'admin' 
 		},
 		{
 			title: 'PROVEEDORES ACTIVOS',
 			value: stats.activeProviders,
-			color: 'proveedor' // Corresponds to --color-proveedor
+			color: 'proveedor'
 		},
 		{
 			title: 'SERVICIOS COMPLETADOS',
 			value: stats.completedServices,
-			color: 'empresa' // Corresponds to --color-empresa
+			color: 'empresa'
 		},
 		{
 			title: 'CALIFICACIÓN CONAX',
 			value: stats.recomRating,
-			color: 'residencial' // Corresponds to --color-residencial
+			color: 'residencial'
 		}
 	];
 </script>
 
 <svelte:head>
-	<title>Dashboard</title>
+	<title>Panel de Control</title>
 </svelte:head>
 
 <div class="p-4 sm:p-6 lg:p-8">

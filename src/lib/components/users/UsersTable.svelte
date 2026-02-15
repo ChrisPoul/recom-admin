@@ -11,7 +11,7 @@
 			<th scope="col">Contacto</th>
 			<th scope="col">Rol</th>
 			<th scope="col">Empresa</th>
-			<th scope="col">Status</th>
+			<th scope="col">Estado</th>
 	{/snippet}
 	{#snippet row(user)}
 			<td>
@@ -20,7 +20,7 @@
 						<img
 							class="h-10 w-10 rounded-full"
 							src={user.photoURL || 'https://www.gravatar.com/avatar/?d=mp'}
-							alt="User avatar"
+							alt="Avatar de usuario"
 						/>
 					</div>
 					<a href={`/users/${user.uid}`} class="font-medium text-gray-900 hover:text-indigo-600">
@@ -48,9 +48,9 @@
 					}`}
 				>
 					{#if user.disabled}
-						Disabled
+						Deshabilitado
 					{:else}
-						Active
+						Activo
 					{/if}
 				</span>
 			</td>

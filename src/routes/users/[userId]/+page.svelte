@@ -21,7 +21,7 @@
                     <img
                         class="h-24 w-24 rounded-full"
                         src={user.photoURL || 'https://www.gravatar.com/avatar/?d=mp'}
-                        alt="User avatar"
+                        alt="Avatar de usuario"
                     />
                 </div>
                 <div>
@@ -64,14 +64,14 @@
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{user.celular || 'N/A'}</dd>
                     </div>
                     <div class="py-4 grid grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-                        <dt class="text-sm font-medium text-gray-500">Status</dt>
+                        <dt class="text-sm font-medium text-gray-500">Estado</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                             <span
                                 class="inline-flex rounded-full px-2 text-xs leading-5 font-semibold {user.disabled
                                     ? 'bg-red-100 text-red-800'
                                     : 'bg-green-100 text-green-800'}"
                             >
-                                {user.disabled ? 'Disabled' : 'Active'}
+                                {user.disabled ? 'Deshabilitado' : 'Activo'}
                             </span>
                         </dd>
                     </div>

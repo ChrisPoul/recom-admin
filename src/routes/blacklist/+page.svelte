@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Blacklist</title>
+	<title>Lista Negra</title>
 </svelte:head>
 
 <div class="p-4 sm:p-6 lg:p-8">

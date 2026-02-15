@@ -6,7 +6,7 @@
 	let { children } = $props();
 
 	const navLinks = [
-		{ href: '/', label: 'Dashboard', icon: 'dashboard.svg' },
+		{ href: '/', label: 'Panel de Control', icon: 'dashboard.svg' },
 		{ href: '/servicios', label: 'Servicios', icon: 'servicios.svg' },
 		{
 			label: 'Usuarios',
@@ -19,7 +19,7 @@
 				{ href: '/users?rol=empresa', label: 'Empresas', rol: 'empresa' }
 			]
 		},
-		{ href: '/blacklist', label: 'Blacklist', icon: 'blacklist.svg' },
+		{ href: '/blacklist', label: 'Lista Negra', icon: 'blacklist.svg' },
 		// { href: '/editar', label: 'Editar', icon: 'editar.svg' },
 		{ href: '/tickets', label: 'Tickets', icon: 'tickets.svg' }
 	];
@@ -92,7 +92,7 @@
 						class="flex w-full items-center rounded-lg px-4 py-2 text-left hover:bg-gray-700 hover:text-white"
 					>
 						<img src="/side-menu/logout.svg" alt="" class="mr-3 h-6 w-6" />
-						<span>Logout</span>
+						<span>Cerrar Sesión</span>
 					</button>
 				</form>
 			</div>

@@ -190,7 +190,7 @@
                         <div class="mt-4">
                             <p class="text-sm text-gray-500">INE Frontal Actual:</p>
                             <a href={ineFrontalUrl} target="_blank" rel="noopener noreferrer">
-                                <img src={ineFrontalUrl} alt="INE Frontal Preview" class="mt-2 h-24 w-auto rounded-lg border" />
+                                <img src={ineFrontalUrl} alt="Vista previa INE Frontal" class="mt-2 h-24 w-auto rounded-lg border" />
                             </a>
                         </div>
                     {/if}
@@ -213,7 +213,7 @@
                         <div class="mt-4">
                             <p class="text-sm text-gray-500">INE Trasera Actual:</p>
                             <a href={ineTraseraUrl} target="_blank" rel="noopener noreferrer">
-                                <img src={ineTraseraUrl} alt="INE Trasera Preview" class="mt-2 h-24 w-auto rounded-lg border" />
+                                <img src={ineTraseraUrl} alt="Vista previa INE Trasera" class="mt-2 h-24 w-auto rounded-lg border" />
                             </a>
                         </div>
                     {/if}
@@ -236,7 +236,7 @@
                         <div class="mt-4">
                             <p class="text-sm text-gray-500">INE Selfie Actual:</p>
                             <a href={ineSelfieUrl} target="_blank" rel="noopener noreferrer">
-                                <img src={ineSelfieUrl} alt="INE Selfie Preview" class="mt-2 h-24 w-auto rounded-lg border" />
+                                <img src={ineSelfieUrl} alt="Vista previa INE Selfie" class="mt-2 h-24 w-auto rounded-lg border" />
                             </a>
                         </div>
                     {/if}
